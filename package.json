@@ -1,0 +1,11 @@
+{
+  "name": "twitch-fullstack-project",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {},
+  "keywords": [],
+  "author": "Justin Russo <justin@justinrusso.dev>",
+  "license": "",
+  "dependencies": {},
+  "devDependencies": {}
+}

@@ -1,9 +1,9 @@
-import { CssBaseline } from "@mui/material";
+import RootThemeProvider from "./theme/RootThemeProvider";
 
 export default function App() {
   return (
-    <>
-      <CssBaseline enableColorScheme />
-    </>
+    <RootThemeProvider>
+      <></>
+    </RootThemeProvider>
   );
 }

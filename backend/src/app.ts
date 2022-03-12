@@ -20,8 +20,16 @@ app.use(cookieParser());
 /*
   Security Middlewares
 */
-if (!isProduction) {
-  // enable cors only in development
+if (isProduction) {
+  // Redirect to HTTPS in production
+  app.use((req, res, next) => {
+    if (!req.secure) {
+      return res.redirect(301, `https://${req.headers.host + req.url}`);
+    }
+    next();
+  });
+} else {
+  // enable cors if not production
   app.use(cors());
 }
 app.use(

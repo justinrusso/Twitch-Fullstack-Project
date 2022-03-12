@@ -52,9 +52,16 @@ app.use((_req, _res, next) => {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use(((err: HttpError, _req, res, _next) => {
   res.status(err.status || 500);
+
+  if (config.environment !== "test") {
+    console.error(err);
+  }
+
   res.json({
+    title: err.title || "Server Error",
     message: err.message,
-    error: JSON.parse(JSON.stringify(err)),
+    errors: err.errors,
+    stack: isProduction ? null : err.stack,
   });
 }) as ErrorRequestHandler);
 

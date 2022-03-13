@@ -15,11 +15,6 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
 
-app.use((req, res, next) => {
-  console.log(req.cookies);
-  next();
-});
-
 // Add all security middlewares
 app.use(securityMiddlewares);
 

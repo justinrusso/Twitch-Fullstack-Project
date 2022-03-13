@@ -39,4 +39,12 @@ securityMiddlewares.use(
   })
 );
 
+// Add the xsrf-token to the cookie for non-api GET requests
+securityMiddlewares.use(/^(?!\/?api).*/, (req, res, next) => {
+  if (req.method.toUpperCase() === "GET") {
+    res.cookie("xsrf-token", req.csrfToken());
+  }
+  next();
+});
+
 export default securityMiddlewares;

@@ -7,15 +7,14 @@ import LoginResponse from "../../../../types/responses/LoginResponse";
 import { setTokenCookie } from "../../common/auth";
 import HttpError from "../../common/HttpError";
 import { requireAuth } from "../../common/middlewares/auth";
+import { ResponseWithUserRequired } from "../../common/responses";
 import User from "../../db/entities/User";
 
 const authRouter = Router();
 
 // Get the current user from the session and return their data
-authRouter.get("/", ...requireAuth, (req, res) => {
-  // We can safely assert since requireAuth ensures the user exists on the req
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const user = req.user!;
+authRouter.get("/", ...requireAuth, (_req, res: ResponseWithUserRequired) => {
+  const user = res.locals.user;
   return res.json({
     data: { user },
   });
@@ -51,7 +50,7 @@ authRouter.post(
 
 authRouter.get(
   "/login/demo",
-  expressAsyncHandler(async (req, res, next) => {
+  expressAsyncHandler(async (_req, res, next) => {
     const user = await getRepository(User).findOne({
       where: {
         username: "demouser",

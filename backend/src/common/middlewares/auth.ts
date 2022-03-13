@@ -6,10 +6,15 @@ import SafeUserData from "../../../../types/entity-data/SafeUserData";
 import config from "../../config";
 import User from "../../db/entities/User";
 import HttpError from "../HttpError";
+import { ResponseWithUser } from "../responses";
 
 const { jwtConfig } = config;
 
-export const restoreUser: RequestHandler = (req, res, next) => {
+export const restoreUser: RequestHandler = (
+  req,
+  res: ResponseWithUser,
+  next
+) => {
   const { token } = req.cookies;
 
   return verify(token, jwtConfig.secret, {}, async (err, jwtPayload) => {
@@ -19,20 +24,24 @@ export const restoreUser: RequestHandler = (req, res, next) => {
 
     try {
       const { id } = jwtPayload.data as SafeUserData;
-      req.user = await getRepository(User).findOne(id);
+      res.locals.user = await getRepository(User).findOne(id);
     } catch (e) {
       res.clearCookie("token");
       return next();
     }
 
-    if (!req.user) res.clearCookie("token");
+    if (!res.locals.user) res.clearCookie("token");
 
     return next();
   });
 };
 
-const ensureUserExists: RequestHandler = (req, _res, next) => {
-  if (req.user) return next();
+const ensureUserExists: RequestHandler = (
+  _req,
+  res: ResponseWithUser,
+  next
+) => {
+  if (res.locals.user) return next();
   return next(new HttpError(401));
 };
 

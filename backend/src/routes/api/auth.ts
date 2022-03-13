@@ -38,4 +38,29 @@ authRouter.post(
   })
 );
 
+authRouter.get(
+  "/login/demo",
+  expressAsyncHandler(async (req, res, next) => {
+    const user = await getRepository(User).findOne({
+      where: {
+        username: "demouser",
+      },
+    });
+
+    if (!user) {
+      const error = new HttpError(500);
+      error.message = "Demo Login Failed";
+      return next(error);
+    }
+
+    setTokenCookie(res, user);
+
+    const jsonData: LoginResponse = {
+      data: user,
+    };
+
+    res.json(jsonData);
+  })
+);
+
 export default authRouter;

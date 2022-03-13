@@ -1,11 +1,9 @@
 import cookieParser from "cookie-parser";
-import cors from "cors";
-import csurf from "csurf";
 import express, { ErrorRequestHandler } from "express";
-import helmet from "helmet";
 import morgan from "morgan";
 
 import HttpError from "./common/HttpError";
+import securityMiddlewares from "./common/middlewares/security";
 import config from "./config";
 import routes from "./routes";
 
@@ -17,36 +15,13 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
 
-/*
-  Security Middlewares
-*/
-if (isProduction) {
-  // Redirect to HTTPS in production
-  app.use((req, res, next) => {
-    if (!req.secure) {
-      return res.redirect(301, `https://${req.headers.host + req.url}`);
-    }
-    next();
-  });
-} else {
-  // enable cors if not production
-  app.use(cors());
-}
-app.use(
-  helmet({
-    contentSecurityPolicy: false,
-  })
-);
-// Set the _csrf token and add req.csrfToken method
-app.use(
-  csurf({
-    cookie: {
-      secure: isProduction,
-      sameSite: isProduction && "lax",
-      httpOnly: true,
-    },
-  })
-);
+app.use((req, res, next) => {
+  console.log(req.cookies);
+  next();
+});
+
+// Add all security middlewares
+app.use(securityMiddlewares);
 
 // All routes should be defined in the routes directory
 app.use(routes);

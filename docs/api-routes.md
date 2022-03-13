@@ -2,7 +2,7 @@
 
 ## Auth
 
-### POST /api/login
+### POST /api/auth/login
 
 **Request**:
 
@@ -38,7 +38,7 @@
 }
 ```
 
-### GET /api/login/demo
+### GET /api/auth/login/demo
 
 Logs in a guest as a demo user
 

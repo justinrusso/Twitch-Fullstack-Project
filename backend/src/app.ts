@@ -3,9 +3,9 @@ import cors from "cors";
 import csurf from "csurf";
 import express, { ErrorRequestHandler } from "express";
 import helmet from "helmet";
-import createHttpError, { HttpError } from "http-errors";
 import morgan from "morgan";
 
+import HttpError from "./common/HttpError";
 import config from "./config";
 import routes from "./routes";
 
@@ -53,7 +53,7 @@ app.use(routes);
 
 // Use this to catch all remaining requests and respond with a 404 error
 app.use((_req, _res, next) => {
-  next(createHttpError(404));
+  next(new HttpError(404));
 });
 
 // Disable no-unused-vars since express requires all 4 variables to exist
@@ -66,10 +66,8 @@ app.use(((err: HttpError, _req, res, _next) => {
   }
 
   res.json({
-    title: err.title || "Server Error",
-    message: err.message,
     errors: err.errors,
-    stack: isProduction ? null : err.stack,
+    errorStack: isProduction ? undefined : err.stack,
   });
 }) as ErrorRequestHandler);
 

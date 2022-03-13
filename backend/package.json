@@ -3,8 +3,20 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "build": "tsc",
     "dev": "dotenv nodemon ./src/index.ts",
-    "build": "tsc"
+    "db:migration:revert": "per-env",
+    "db:migration:revert:development": "ts-node ./node_modules/typeorm/cli.js migration:revert",
+    "db:migration:revert:production": "node ./node_modules/typeorm/cli.js migration:revert",
+    "db:migration:run": "per-env",
+    "db:migration:run:development": "ts-node ./node_modules/typeorm/cli.js migration:run",
+    "db:migration:run:production": "node ./node_modules/typeorm/cli.js migration:run",
+    "db:schema:drop": "per-env",
+    "db:schema:drop:development": "ts-node ./node_modules/typeorm/cli.js schema:drop",
+    "db:schema:drop:production": "node ./node_modules/typeorm/cli.js schema:drop",
+    "db:seed:run": "per-env",
+    "db:seed:run:development": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed",
+    "db:seed:run:production": "node ./node_modules/typeorm-seeding/dist/cli.js seed"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -15,9 +27,11 @@
     "helmet": "^5.0.2",
     "http-errors": "^2.0.0",
     "morgan": "^1.10.0",
+    "per-env": "^1.0.2",
     "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
-    "typeorm": "^0.2.45"
+    "typeorm": "^0.2.45",
+    "typeorm-seeding": "^1.6.1"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
@@ -25,6 +39,7 @@
     "@types/cors": "^2.8.12",
     "@types/csurf": "^1.11.2",
     "@types/express": "^4.17.13",
+    "@types/faker": "^4.1.12",
     "@types/http-errors": "^1.8.2",
     "@types/morgan": "^1.9.3",
     "@types/node": "^16.11.26",

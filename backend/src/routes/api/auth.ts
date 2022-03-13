@@ -6,9 +6,20 @@ import LoginRequest from "../../../../types/requests/LoginRequest";
 import LoginResponse from "../../../../types/responses/LoginResponse";
 import { setTokenCookie } from "../../common/auth";
 import HttpError from "../../common/HttpError";
+import { requireAuth } from "../../common/middlewares/auth";
 import User from "../../db/entities/User";
 
 const authRouter = Router();
+
+// Get the current user from the session and return their data
+authRouter.get("/", ...requireAuth, (req, res) => {
+  // We can safely assert since requireAuth ensures the user exists on the req
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const user = req.user!;
+  return res.json({
+    data: { user },
+  });
+});
 
 authRouter.post(
   "/login",

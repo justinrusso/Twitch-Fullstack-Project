@@ -5,6 +5,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "dotenv nodemon ./src/index.ts",
+    "start": "node ./bin/www",
     "db:migration:revert": "per-env",
     "db:migration:revert:development": "ts-node ./node_modules/typeorm/cli.js migration:revert",
     "db:migration:revert:production": "node ./node_modules/typeorm/cli.js migration:revert",

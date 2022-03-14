@@ -1,11 +1,10 @@
 import SafeUserData from "../entity-data/SafeUserData";
 import BaseReponse from "./BaseResponse";
 
-type LoginResponse = BaseReponse<
-  SafeUserData,
-  {
-    credentials: string;
-  }
->;
+export type LoginResponseErrors = {
+  credentials: string;
+};
+
+type LoginResponse = BaseReponse<SafeUserData, LoginResponseErrors>;
 
 export default LoginResponse;

@@ -5,6 +5,7 @@ import { getRepository } from "typeorm";
 import LoginRequest from "../../../../types/requests/LoginRequest";
 import SignupRequest from "../../../../types/requests/SignupRequest";
 import LoginResponse from "../../../../types/responses/LoginResponse";
+import LogoutResponse from "../../../../types/responses/LogoutResponse";
 import SignupResponse from "../../../../types/responses/SignupResponse";
 import { setTokenCookie } from "../../common/auth";
 import HttpError from "../../common/HttpError";
@@ -23,6 +24,21 @@ authRouter.get("/", ...requireAuth, (_req, res: ResponseWithUserRequired) => {
     data: { user },
   });
 });
+
+authRouter.delete(
+  "/",
+  ...requireAuth,
+  (_req, res: ResponseWithUserRequired) => {
+    res.clearCookie("token");
+
+    const responseData: LogoutResponse = {
+      data: {
+        id: res.locals.user.id,
+      },
+    };
+    return res.json(responseData);
+  }
+);
 
 authRouter.post(
   "/login",

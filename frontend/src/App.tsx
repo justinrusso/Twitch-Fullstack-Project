@@ -1,14 +1,49 @@
+import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
+import AuthRedirect from "./components/auth/AuthRedirect";
+import AccountLayout from "./components/layouts/AccountLayout";
+import { useAppDispatch } from "./hooks/redux";
 import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
+import { restoreUserSession } from "./store/user/thunks";
 import RootThemeProvider from "./theme/RootThemeProvider";
 
 export default function App(): JSX.Element {
+  const dispatch = useAppDispatch();
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    dispatch(restoreUserSession()).finally(() => setIsLoaded(true));
+  }, [dispatch]);
+
   return (
     <RootThemeProvider>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-      </Routes>
+      {isLoaded ? (
+        <Routes>
+          <Route
+            path="/"
+            element={<AuthRedirect redirectLoggedInTo="/account" />}
+          >
+            <Route index element={<HomePage />} />
+            <Route path="login" element={<LoginPage />} />
+            <Route path="signup" element={<SignupPage />} />
+          </Route>
+          <Route
+            path="/account"
+            element={
+              <AuthRedirect redirectLoggedOutTo="/">
+                <AccountLayout />
+              </AuthRedirect>
+            }
+          >
+            <Route index />
+          </Route>
+        </Routes>
+      ) : (
+        <></>
+      )}
     </RootThemeProvider>
   );
 }

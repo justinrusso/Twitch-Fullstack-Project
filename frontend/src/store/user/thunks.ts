@@ -2,7 +2,9 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import SafeUserData from "../../../../types/entity-data/SafeUserData";
 import LoginRequest from "../../../../types/requests/LoginRequest";
+import SignupRequest from "../../../../types/requests/SignupRequest";
 import LoginResponse from "../../../../types/responses/LoginResponse";
+import SignupResponse from "../../../../types/responses/SignupResponse";
 import LocalAuthApi from "../../api/local/LocalAuthApi";
 
 export const loginUser = createAsyncThunk(
@@ -24,6 +26,20 @@ export const loginDemoUser = createAsyncThunk(
   async (_args, thunkAPI): Promise<SafeUserData> => {
     const res = await LocalAuthApi.loginDemo();
     const resData: LoginResponse = await res.json();
+
+    if (resData.errors || !resData.data) {
+      throw thunkAPI.rejectWithValue(resData.errors);
+    }
+
+    return resData.data;
+  }
+);
+
+export const signupUser = createAsyncThunk(
+  "user/signupUser",
+  async (data: SignupRequest, thunkAPI): Promise<SafeUserData> => {
+    const res = await LocalAuthApi.signup(data);
+    const resData: SignupResponse = await res.json();
 
     if (resData.errors || !resData.data) {
       throw thunkAPI.rejectWithValue(resData.errors);

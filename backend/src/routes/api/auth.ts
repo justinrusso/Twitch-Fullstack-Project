@@ -3,11 +3,14 @@ import expressAsyncHandler from "express-async-handler";
 import { getRepository } from "typeorm";
 
 import LoginRequest from "../../../../types/requests/LoginRequest";
+import SignupRequest from "../../../../types/requests/SignupRequest";
 import LoginResponse from "../../../../types/responses/LoginResponse";
+import SignupResponse from "../../../../types/responses/SignupResponse";
 import { setTokenCookie } from "../../common/auth";
 import HttpError from "../../common/HttpError";
 import { requireAuth } from "../../common/middlewares/auth";
 import loginValidationMiddlewares from "../../common/middlewares/validation/login";
+import signupValidatorMiddlewares from "../../common/middlewares/validation/signup";
 import { ResponseWithUserRequired } from "../../common/responses";
 import User from "../../db/entities/User";
 
@@ -68,6 +71,32 @@ authRouter.get(
     setTokenCookie(res, user);
 
     const jsonData: LoginResponse = {
+      data: user,
+    };
+
+    res.json(jsonData);
+  })
+);
+
+authRouter.post(
+  "/signup",
+  ...signupValidatorMiddlewares,
+  expressAsyncHandler(async (req, res) => {
+    const { firstName, lastName, username, password } =
+      req.body as SignupRequest;
+
+    const user = new User();
+    user.firstName = firstName;
+    user.lastName = lastName;
+    user.username = username;
+    user.password = password;
+    user.balance = 0;
+
+    await getRepository(User).save(user);
+
+    setTokenCookie(res, user);
+
+    const jsonData: SignupResponse = {
       data: user,
     };
 

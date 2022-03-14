@@ -1,6 +1,6 @@
 import { createSlice, isFulfilled } from "@reduxjs/toolkit";
 
-import SafeUserData from "../../../../types/entity-data/SafeUserData";
+import SafeUserData from "../../../../types/entity/data/SafeUserData";
 import {
   loginDemoUser,
   loginUser,

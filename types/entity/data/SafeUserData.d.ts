@@ -1,5 +1,7 @@
+import UserId from "../ids/UserId";
+
 type SafeUserData = {
-  readonly id: number;
+  readonly id: UserId;
   readonly firstName: string;
   readonly lastName: string;
   readonly username: string;

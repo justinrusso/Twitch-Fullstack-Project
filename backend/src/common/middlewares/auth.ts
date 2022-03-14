@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 import { verify } from "jsonwebtoken";
 import { getRepository } from "typeorm";
 
-import SafeUserData from "../../../../types/entity-data/SafeUserData";
+import SafeUserData from "../../../../types/entity/data/SafeUserData";
 import config from "../../config";
 import User from "../../db/entities/User";
 import HttpError from "../HttpError";

@@ -1,13 +1,14 @@
 import { compareSync, hashSync } from "bcryptjs";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-import type SafeUserData from "../../../../types/entity-data/SafeUserData";
+import type SafeUserData from "../../../../types/entity/data/SafeUserData";
+import UserId from "../../../../types/entity/ids/UserId";
 import type { Mutable } from "../../common/Mutable";
 
 @Entity({ name: "users" })
 export default class User implements SafeUserData {
   @PrimaryGeneratedColumn({})
-  id!: number;
+  id!: UserId;
 
   @Column({ nullable: false })
   firstName!: string;

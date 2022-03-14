@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import SafeUserData from "../../../../types/entity-data/SafeUserData";
+import SafeUserData from "../../../../types/entity/data/SafeUserData";
 import LoginRequest from "../../../../types/requests/LoginRequest";
 import SignupRequest from "../../../../types/requests/SignupRequest";
 import LoginResponse from "../../../../types/responses/LoginResponse";

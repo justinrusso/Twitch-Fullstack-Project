@@ -1,4 +1,4 @@
-import SafeUserData from "../entity-data/SafeUserData";
+import SafeUserData from "../entity/data/SafeUserData";
 import BaseReponse from "./BaseResponse";
 
 export type LoginResponseErrors = {

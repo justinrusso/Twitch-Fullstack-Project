@@ -4,7 +4,9 @@ import {
   Button,
   IconButton,
   InputAdornment,
+  Link,
   TextField,
+  Typography,
 } from "@mui/material";
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +14,7 @@ import { LoginResponseErrors } from "../../../../types/responses/LoginResponse";
 
 import useFormFields from "../../hooks/form-fields";
 import { useAppDispatch } from "../../hooks/redux";
-import { loginUser } from "../../store/user/thunks";
+import { loginDemoUser, loginUser } from "../../store/user/thunks";
 
 export default function LoginForm(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -31,6 +33,18 @@ export default function LoginForm(): JSX.Element {
 
     try {
       await dispatch(loginUser(fields)).unwrap();
+      navigate("/account");
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+      setErrors(error as LoginResponseErrors);
+    }
+  };
+
+  const handleDemoLogin = async () => {
+    try {
+      await dispatch(loginDemoUser()).unwrap();
       navigate("/account");
     } catch (error) {
       if (error instanceof Error) {
@@ -79,6 +93,12 @@ export default function LoginForm(): JSX.Element {
       <Button type="submit" variant="contained">
         Sign In
       </Button>
+      <Typography>
+        Looking to try out the website?{" "}
+        <Link component="button" type="button" onClick={handleDemoLogin}>
+          Log in as a demo user
+        </Link>
+      </Typography>
     </Box>
   );
 }

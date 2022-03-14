@@ -18,3 +18,17 @@ export const loginUser = createAsyncThunk(
     return resData.data;
   }
 );
+
+export const loginDemoUser = createAsyncThunk(
+  "user/loginDemoUser",
+  async (_args, thunkAPI): Promise<SafeUserData> => {
+    const res = await LocalAuthApi.loginDemo();
+    const resData: LoginResponse = await res.json();
+
+    if (resData.errors || !resData.data) {
+      throw thunkAPI.rejectWithValue(resData.errors);
+    }
+
+    return resData.data;
+  }
+);

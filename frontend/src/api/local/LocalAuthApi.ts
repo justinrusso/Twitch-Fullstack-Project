@@ -1,5 +1,5 @@
 import LoginRequest from "../../../../types/requests/LoginRequest";
-import { fetchApiWithCsrf, routeBuilder } from "../utils";
+import { fetchApi, fetchApiWithCsrf, routeBuilder } from "../utils";
 
 const buildAuthRoute = routeBuilder("/api/auth");
 
@@ -9,5 +9,9 @@ export default class LocalAuthApi {
       method: "POST",
       body: JSON.stringify(data),
     });
+  }
+
+  static async loginDemo() {
+    return fetchApi(buildAuthRoute("/login/demo"));
   }
 }

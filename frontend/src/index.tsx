@@ -9,11 +9,20 @@ import { BrowserRouter } from "react-router-dom";
 
 import App from "./App";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById("root")
-);
+function initializeReact() {
+  ReactDOM.render(
+    <React.StrictMode>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </React.StrictMode>,
+    document.getElementById("root")
+  );
+}
+
+// Get xsrf-token cookie in development
+if (process.env.NODE_ENV === "development") {
+  fetch("/api/csrf/restore").then(initializeReact);
+} else {
+  initializeReact();
+}

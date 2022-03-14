@@ -3,7 +3,7 @@ import { Container, Toolbar, Typography } from "@mui/material";
 import LoginForm from "../components/auth/LoginForm";
 import UnauthedNav from "../components/nav/UnauthedNav";
 
-export default function HomePage(): JSX.Element {
+export default function LoginPage(): JSX.Element {
   return (
     <>
       <UnauthedNav />

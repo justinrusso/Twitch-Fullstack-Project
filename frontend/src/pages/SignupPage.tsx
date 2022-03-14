@@ -8,8 +8,13 @@ export default function SignupPage(): JSX.Element {
     <>
       <UnauthedNav />
       <Toolbar />
-      <Container maxWidth="sm">
-        <Typography variant="h2" component="h1" textAlign="center" gutterBottom>
+      <Container
+        maxWidth="sm"
+        sx={{
+          py: 4,
+        }}
+      >
+        <Typography variant="h4" component="h1" textAlign="center" gutterBottom>
           Create an account
         </Typography>
         <SignupForm />

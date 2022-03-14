@@ -16,6 +16,10 @@ export default class LocalAuthApi {
     return fetchApi(buildAuthRoute("/login/demo"));
   }
 
+  static async restoreSession() {
+    return fetchApi(buildAuthRoute());
+  }
+
   static async signup(data: SignupRequest) {
     return fetchApiWithCsrf(buildAuthRoute("/signup"), {
       method: "POST",

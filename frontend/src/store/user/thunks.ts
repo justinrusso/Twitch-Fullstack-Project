@@ -35,6 +35,20 @@ export const loginDemoUser = createAsyncThunk(
   }
 );
 
+export const restoreUserSession = createAsyncThunk(
+  "user/restoreUserSession",
+  async (_args, thunkAPI): Promise<SafeUserData> => {
+    const res = await LocalAuthApi.restoreSession();
+    const resData: LoginResponse = await res.json();
+
+    if (resData.errors || !resData.data) {
+      throw thunkAPI.rejectWithValue(resData.errors);
+    }
+
+    return resData.data;
+  }
+);
+
 export const signupUser = createAsyncThunk(
   "user/signupUser",
   async (data: SignupRequest, thunkAPI): Promise<SafeUserData> => {

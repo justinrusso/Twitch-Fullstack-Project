@@ -20,9 +20,12 @@ const authRouter = Router();
 // Get the current user from the session and return their data
 authRouter.get("/", ...requireAuth, (_req, res: ResponseWithUserRequired) => {
   const user = res.locals.user;
-  return res.json({
-    data: { user },
-  });
+
+  const jsonData: LoginResponse = {
+    data: user,
+  };
+
+  return res.json(jsonData);
 });
 
 authRouter.delete(

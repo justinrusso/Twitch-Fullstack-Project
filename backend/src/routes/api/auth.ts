@@ -7,6 +7,7 @@ import LoginResponse from "../../../../types/responses/LoginResponse";
 import { setTokenCookie } from "../../common/auth";
 import HttpError from "../../common/HttpError";
 import { requireAuth } from "../../common/middlewares/auth";
+import loginValidationMiddlewares from "../../common/middlewares/validation/login";
 import { ResponseWithUserRequired } from "../../common/responses";
 import User from "../../db/entities/User";
 
@@ -22,6 +23,7 @@ authRouter.get("/", ...requireAuth, (_req, res: ResponseWithUserRequired) => {
 
 authRouter.post(
   "/login",
+  ...loginValidationMiddlewares,
   expressAsyncHandler(async (req, res, next) => {
     const { username, password } = req.body as LoginRequest;
 

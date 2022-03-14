@@ -2,6 +2,7 @@ import { createSlice, isFulfilled } from "@reduxjs/toolkit";
 
 import SafeUserData from "../../../../types/entity-data/SafeUserData";
 import {
+  loginDemoUser,
   loginUser,
   logoutUser,
   restoreUserSession,
@@ -20,7 +21,7 @@ const userSlice = createSlice({
     });
 
     builder.addMatcher(
-      isFulfilled(loginUser, restoreUserSession, signupUser),
+      isFulfilled(loginDemoUser, loginUser, restoreUserSession, signupUser),
       (_state, action) => {
         return action.payload;
       }

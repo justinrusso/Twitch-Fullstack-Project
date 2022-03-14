@@ -24,17 +24,17 @@ The `users` table stores data about a user. This includes the user's `balance` w
 The `bank_transfers` table stores historical data about deposits to a user's account from their bank, or widthdraws from the user's account to their bank.
 
 - The `processor` corresponds to a payment processors internal id. Currently `stripe` is the only value.
-- The `chargeId` corresponds to an id provided from the payment processor for reference later if necessary.
+- The `processorsId` corresponds to an id provided from the payment processor for reference later if necessary.
 
-| Column Name | Data Type | Attributes                        |
-| ----------- | --------- | --------------------------------- |
-| id          | serial    | PK NOT NULL                       |
-| userId      | integer   | FK NOT NULL (references users.id) |
-| amount      | integer   | NOT NULL                          |
-| deposit     | boolean   | NOT NULL                          |
-| processor   | string    | NOT NULL                          |
-| chargeId    | string    | NOT NULL                          |
-| createdAt   | timestamp | NOT NULL                          |
+| Column Name  | Data Type | Attributes                        |
+| ------------ | --------- | --------------------------------- |
+| id           | serial    | PK NOT NULL                       |
+| userId       | integer   | FK NOT NULL (references users.id) |
+| amount       | integer   | NOT NULL                          |
+| deposit      | boolean   | NOT NULL                          |
+| processor    | string    | NOT NULL                          |
+| processorsId | string    | NOT NULL                          |
+| createdAt    | timestamp | NOT NULL                          |
 
 ## Transactions Table
 

@@ -73,7 +73,10 @@ export default function AccountSidebar({
   return (
     <Box
       component="nav"
-      sx={{ width: { sm: width }, flexShrink: { sm: 0 } }}
+      sx={{
+        width: { [drawerBreakpoint]: width },
+        flexShrink: { [drawerBreakpoint]: 0 },
+      }}
       aria-label="account navigation"
     >
       <Drawer

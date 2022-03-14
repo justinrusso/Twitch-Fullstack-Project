@@ -20,6 +20,20 @@ _Will respond with a valid response only if a token cookie is provided with the 
 }
 ```
 
+### DELETE /api/auth
+
+Logs out an authenticated user
+
+**Valid Response**:
+
+```ts
+{
+  data: {
+    id: number;
+  }
+}
+```
+
 ### POST /api/auth/login
 
 **Request**:
@@ -71,20 +85,6 @@ Logs in a guest as a demo user
     username: string;
     profileImgUrl?: string;
     balance: number;
-  }
-}
-```
-
-### GET /api/auth/logout
-
-Logs out an authenticated user
-
-**Valid Response**:
-
-```ts
-{
-  data: {
-    id: number;
   }
 }
 ```

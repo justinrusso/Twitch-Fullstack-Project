@@ -4,11 +4,16 @@ import {
   List,
   ListItem,
   ListItemText,
+  Stack,
   Theme,
+  Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { selectUser } from "../../store/user/selectors";
 import { logoutUser } from "../../store/user/thunks";
+import { currencyFormatter } from "../../utils/currency";
+import UserAvatar from "../common/UserAvatar";
 
 type AccountSidebarProps = {
   closeDrawer: () => void;
@@ -26,6 +31,8 @@ export default function AccountSidebar({
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const user = useAppSelector(selectUser());
+
   const handleLogout = () => {
     dispatch(logoutUser())
       .unwrap()
@@ -34,6 +41,27 @@ export default function AccountSidebar({
 
   const drawerContents = (
     <>
+      <Box p={4}>
+        <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
+          <UserAvatar
+            firstName={user?.firstName}
+            lastName={user?.lastName}
+            height={80}
+            width={80}
+          />
+          <div>
+            <Typography sx={{ fontWeight: 500 }} gutterBottom>
+              Hi, {user?.firstName}
+            </Typography>
+            <Typography variant="body2">@{user?.username}</Typography>
+          </div>
+        </Stack>
+        <Box pt={2}>
+          <Typography>
+            {currencyFormatter.format(user?.balance || 0)} in account
+          </Typography>
+        </Box>
+      </Box>
       <List>
         <ListItem button onClick={handleLogout}>
           <ListItemText primary="Log out" />
@@ -46,7 +74,7 @@ export default function AccountSidebar({
     <Box
       component="nav"
       sx={{ width: { sm: width }, flexShrink: { sm: 0 } }}
-      aria-label="mailbox folders"
+      aria-label="account navigation"
     >
       <Drawer
         variant="temporary"

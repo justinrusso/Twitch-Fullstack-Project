@@ -31,6 +31,8 @@ export default function LoginForm(): JSX.Element {
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
+    setErrors({});
+
     try {
       await dispatch(loginUser(fields)).unwrap();
       navigate("/account");

@@ -1,7 +1,12 @@
 import { createSlice, isFulfilled } from "@reduxjs/toolkit";
 
 import SafeUserData from "../../../../types/entity-data/SafeUserData";
-import { loginUser, restoreUserSession, signupUser } from "./thunks";
+import {
+  loginUser,
+  logoutUser,
+  restoreUserSession,
+  signupUser,
+} from "./thunks";
 
 const initialState = null;
 
@@ -10,6 +15,10 @@ const userSlice = createSlice({
   initialState: initialState as SafeUserData | null,
   reducers: {},
   extraReducers: (builder) => {
+    builder.addCase(logoutUser.fulfilled, () => {
+      return null;
+    });
+
     builder.addMatcher(
       isFulfilled(loginUser, restoreUserSession, signupUser),
       (_state, action) => {

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import RedirectAuth from "./components/auth/RedirectAuth";
+import AccountLayout from "./components/layouts/AccountLayout";
 import { useAppDispatch } from "./hooks/redux";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
@@ -25,6 +26,9 @@ export default function App(): JSX.Element {
             <Route index element={<HomePage />} />
             <Route path="login" element={<LoginPage />} />
             <Route path="signup" element={<SignupPage />} />
+          </Route>
+          <Route path="/account" element={<AccountLayout />}>
+            <Route index />
           </Route>
         </Routes>
       ) : (

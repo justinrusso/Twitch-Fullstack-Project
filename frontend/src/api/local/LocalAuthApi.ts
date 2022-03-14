@@ -16,6 +16,12 @@ export default class LocalAuthApi {
     return fetchApi(buildAuthRoute("/login/demo"));
   }
 
+  static async logout() {
+    return fetchApiWithCsrf(buildAuthRoute(), {
+      method: "DELETE",
+    });
+  }
+
   static async restoreSession() {
     return fetchApi(buildAuthRoute());
   }

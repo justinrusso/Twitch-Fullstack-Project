@@ -35,6 +35,16 @@ export const loginDemoUser = createAsyncThunk(
   }
 );
 
+export const logoutUser = createAsyncThunk(
+  "user/logoutUser",
+  async (): Promise<void> => {
+    const res = await LocalAuthApi.logout();
+    if (!res.ok) {
+      throw new Error("Failed to log out");
+    }
+  }
+);
+
 export const restoreUserSession = createAsyncThunk(
   "user/restoreUserSession",
   async (_args, thunkAPI): Promise<SafeUserData> => {

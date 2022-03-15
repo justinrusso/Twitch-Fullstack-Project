@@ -31,7 +31,7 @@ export default function AccountLayout() {
           component="main"
           sx={{
             flexGrow: 1,
-            p: 3,
+            py: 3,
             width: { [drawerBreakpoint]: `calc(100% - ${drawerWidth}px)` },
           }}
         >

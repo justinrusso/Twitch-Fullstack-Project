@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Tab, Tabs, Typography } from "@mui/material";
 import { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -70,6 +70,24 @@ export default function TransferPage(): JSX.Element {
           setConfirmationOpen(true);
         }}
       >
+        <Box pb={1}>
+          <Tabs
+            value={Number(fields.deposit)}
+            onChange={(_e, value) => setField("deposit", Boolean(value))}
+            aria-label="bank transfer type"
+          >
+            <Tab
+              label="Deposit"
+              id="transfer-deposit-deposit"
+              value={Number(true)}
+            />
+            <Tab
+              label="Withdraw"
+              id="transfer-deposit-withdraw"
+              value={Number(false)}
+            />
+          </Tabs>
+        </Box>
         <CurrencyTextField
           id="transfer-amount"
           label="Amount"

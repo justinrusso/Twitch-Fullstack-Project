@@ -48,6 +48,7 @@ export async function refundUser(id: string) {
 
 /**
  * Withdraws money from a user's account
+ * NOTE: This currently just transfers the money into the bank account attached to the Stripe account linked to the API key.
  * @param {number} amount the amount to remove from the user's account in cents
  * @returns The stripe response object
  */

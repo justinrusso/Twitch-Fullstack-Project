@@ -71,10 +71,20 @@ export default function UnauthedNav(): JSX.Element {
                 },
               }}
             >
-              <Button variant="text" component={RouterLink} to="/login">
+              <Button
+                variant="text"
+                component={RouterLink}
+                to="/login"
+                color="inherit"
+              >
                 Log in
               </Button>
-              <Button variant="contained" component={RouterLink} to="/signup">
+              <Button
+                variant="outlined"
+                component={RouterLink}
+                to="/signup"
+                color="inherit"
+              >
                 Sign Up
               </Button>
             </Stack>

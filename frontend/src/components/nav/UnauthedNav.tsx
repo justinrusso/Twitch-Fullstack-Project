@@ -56,7 +56,9 @@ export default function UnauthedNav(): JSX.Element {
                   textDecoration: "none",
                 }}
               >
-                <Typography component="span">App Name</Typography>
+                <Typography component="span" color="primary" variant="h6">
+                  PayMee
+                </Typography>
               </Link>
             </Box>
             <Stack

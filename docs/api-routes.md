@@ -131,3 +131,53 @@ Logs in a guest as a demo user
   }
 }
 ```
+
+## Transfers
+
+### POST /api/transfers
+
+_Note: A user must be authenticated to access this API endpoint_
+
+**Request**:
+
+```ts
+{
+  /**
+   * A whole number greater than 0
+   */
+  amount: number;
+
+  /**
+   * Determines if the transfer is a deposit or withdraw
+   */
+  deposit: boolean;
+}
+```
+
+**Valid Response**:
+
+```ts
+{
+  data: {
+    id: number;
+    amount: number;
+    deposit: boolean;
+
+    /**
+     * A timestamp string
+     */
+    createdAt: string;
+  }
+}
+```
+
+**Invalid Response**:
+
+```ts
+{
+  errors: {
+    amount?: string;
+    deposit?: string;
+  }
+}
+```

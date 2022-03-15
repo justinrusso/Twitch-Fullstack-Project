@@ -1,9 +1,10 @@
 import { compareSync, hashSync } from "bcryptjs";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 import type SafeUserData from "../../../../types/entity/data/SafeUserData";
 import UserId from "../../../../types/entity/ids/UserId";
 import type { Mutable } from "../../common/Mutable";
+import { BankTransfer } from "./BankTransfer";
 
 @Entity({ name: "users" })
 export default class User implements SafeUserData {
@@ -55,4 +56,7 @@ export default class User implements SafeUserData {
       balance: this.balance,
     };
   }
+
+  @OneToMany(() => BankTransfer, (bankTransfer) => bankTransfer.user)
+  bankTransfers?: BankTransfer[];
 }

@@ -3,12 +3,14 @@ import {
   Drawer,
   List,
   ListItem,
+  ListItemButton,
   ListItemText,
   Stack,
   Theme,
   Typography,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { matchPath, useLocation, useNavigate } from "react-router-dom";
+
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { selectUser } from "../../store/user/selectors";
 import { logoutUser } from "../../store/user/thunks";
@@ -29,6 +31,7 @@ export default function AccountSidebar({
   width,
 }: AccountSidebarProps) {
   const dispatch = useAppDispatch();
+  const location = useLocation();
   const navigate = useNavigate();
 
   const user = useAppSelector(selectUser());
@@ -58,11 +61,24 @@ export default function AccountSidebar({
         </Stack>
         <Box pt={2}>
           <Typography>
-            {currencyFormatter.format(user?.balance || 0)} in account
+            {currencyFormatter.format((user?.balance || 0) / 100)} in account
           </Typography>
         </Box>
       </Box>
       <List>
+        <ListItemButton
+          selected={Boolean(matchPath("/account", location.pathname))}
+          onClick={() => navigate("")}
+        >
+          <ListItemText primary="Home" />
+        </ListItemButton>
+        <ListItemButton
+          selected={Boolean(matchPath("/account/transfer", location.pathname))}
+          onClick={() => navigate("transfer")}
+        >
+          <ListItemText primary="Manage Funds" />
+        </ListItemButton>
+
         <ListItem button onClick={handleLogout}>
           <ListItemText primary="Log out" />
         </ListItem>

@@ -37,7 +37,7 @@ export default function TransferPage(): JSX.Element {
           amount: Math.round(parseFloat(fields.amount) * 100),
           deposit: fields.deposit,
         })
-      );
+      ).unwrap();
       navigate("..");
     } catch (error) {
       if (error instanceof Error) {

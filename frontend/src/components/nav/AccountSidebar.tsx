@@ -61,7 +61,7 @@ export default function AccountSidebar({
         </Stack>
         <Box pt={2}>
           <Typography>
-            {currencyFormatter.format(user?.balance || 0)} in account
+            {currencyFormatter.format((user?.balance || 0) / 100)} in account
           </Typography>
         </Box>
       </Box>

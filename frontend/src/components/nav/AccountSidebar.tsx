@@ -45,6 +45,12 @@ export default function AccountSidebar({
   const drawerContents = (
     <>
       <Box p={4}>
+        <Box pb={2}>
+          <Typography component="span" color="primary" variant="h6">
+            PayMee
+          </Typography>
+        </Box>
+
         <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
           <UserAvatar
             firstName={user?.firstName}

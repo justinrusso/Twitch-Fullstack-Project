@@ -33,6 +33,7 @@
     "per-env": "^1.0.2",
     "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
+    "stripe": "^8.209.0",
     "typeorm": "^0.2.45",
     "typeorm-seeding": "^1.6.1"
   },

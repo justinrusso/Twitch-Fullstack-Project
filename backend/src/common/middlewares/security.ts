@@ -12,7 +12,8 @@ const securityMiddlewares = Router();
 if (isProduction) {
   // Redirect to HTTPS in production
   securityMiddlewares.use((req, res, next) => {
-    if (!req.secure) {
+    // Check X-Forwarded-Proto instead of req.secure. See https://help.heroku.com/VKLSBMJS/why-am-i-getting-a-message-too-many-redirects
+    if (req.headers["x-forwarded-proto"] !== "https") {
       return res.redirect(301, `https://${req.headers.host + req.url}`);
     }
     next();

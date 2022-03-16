@@ -65,7 +65,6 @@ export default function TransferPage(): JSX.Element {
           alignItems: "center",
         }}
         onSubmit={(e: FormEvent) => {
-          console.log("onSubmit");
           e.preventDefault();
           setConfirmationOpen(true);
         }}

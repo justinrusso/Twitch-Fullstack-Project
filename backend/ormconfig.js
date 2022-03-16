@@ -29,7 +29,10 @@ const config = {
 };
 
 if (env === "production") {
-  config.url = process.env.DB_URL;
+  config.url = process.env.DATABASE_URL;
+  config.extra = {
+    ssl: { rejectUnauthorized: false },
+  };
 } else if (env === "development") {
   config.username = process.env.DB_USERNAME;
   config.password = process.env.DB_PASSWORD;

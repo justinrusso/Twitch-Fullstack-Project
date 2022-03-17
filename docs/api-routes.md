@@ -181,3 +181,48 @@ _Note: A user must be authenticated to access this API endpoint_
   }
 }
 ```
+
+## Users
+
+### GET /api/users
+
+_Note: A user must be authenticated to access this API endpoint_
+
+**Query Parameters**:
+
+```ts
+{
+  /**
+   * A string to use for searching.
+   * At least one character must be sent.
+   * Searches the username and the first + ' ' + last name
+   */
+  key: string;
+}
+```
+
+**Valid Response**:
+
+Returns the first 10 results from the query
+
+```ts
+{
+  data: {
+    id: number;
+    firstName: string;
+    lastName: string;
+    username: string;
+    profileImgUrl?: string;
+  }[];
+}
+```
+
+**Invalid Response**:
+
+```ts
+{
+  errors: {
+    key?: string;
+  }
+}
+```

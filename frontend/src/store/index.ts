@@ -2,11 +2,13 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import type { Middleware } from "redux";
 
 import userReducer from "./user";
+import usersReducer from "./users";
 
 const isDev = process.env.NODE_ENV !== "production";
 
 const rootReducer = combineReducers({
   user: userReducer,
+  users: usersReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

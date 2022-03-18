@@ -5,6 +5,11 @@ type UsersQueryRequest = {
    * Searches the username and the first + ' ' + last name
    */
   key: string;
+
+  /**
+   * Allows omitting the currently logged in user from the query results
+   */
+  ignoreSelf?: boolean;
 };
 
 export default UsersQueryRequest;

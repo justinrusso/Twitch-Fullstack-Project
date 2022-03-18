@@ -1,11 +1,13 @@
 import { STATUS_CODES } from "http";
 
-export default class HttpError extends Error {
-  public errors?: Record<string, unknown>;
+export default class HttpError<
+  Errors extends Record<string, unknown> = Record<string, unknown>
+> extends Error {
+  public errors?: Errors;
 
   public status: HttpErrorCode;
 
-  constructor(statusCode: HttpErrorCode, errors?: Record<string, unknown>) {
+  constructor(statusCode: HttpErrorCode, errors?: Errors) {
     super(STATUS_CODES[statusCode]);
 
     const errorSide =

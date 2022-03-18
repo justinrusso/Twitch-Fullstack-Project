@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Drawer,
   List,
   ListItem,
@@ -87,6 +88,15 @@ export default function AccountSidebar({
 
         <ListItem button onClick={handleLogout}>
           <ListItemText primary="Log out" />
+        </ListItem>
+        <ListItem sx={{ p: 4 }}>
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={() => navigate("transactions/new")}
+          >
+            Send Money
+          </Button>
         </ListItem>
       </List>
     </>

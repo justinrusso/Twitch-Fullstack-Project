@@ -1,10 +1,12 @@
 import { compareSync, hashSync } from "bcryptjs";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import PublicUserData from "../../../../types/entity/data/PublicUserData";
 
 import type SafeUserData from "../../../../types/entity/data/SafeUserData";
 import UserId from "../../../../types/entity/ids/UserId";
 import type { Mutable } from "../../common/Mutable";
 import { BankTransfer } from "./BankTransfer";
+import Transaction from "./Transaction";
 
 @Entity({ name: "users" })
 export default class User implements SafeUserData {
@@ -48,15 +50,39 @@ export default class User implements SafeUserData {
 
   toJSON(): SafeUserData {
     return {
+      ...this.toPublicJSON(),
+      balance: this.balance,
+    };
+  }
+
+  toPublicJSON(): PublicUserData {
+    return {
       id: this.id,
       firstName: this.firstName,
       lastName: this.lastName,
       username: this.username,
       profileImgUrl: this.profileImgUrl,
-      balance: this.balance,
     };
   }
 
   @OneToMany(() => BankTransfer, (bankTransfer) => bankTransfer.user)
   bankTransfers?: BankTransfer[];
+
+  /**
+   * Transactions where the user was the payer
+   */
+  @OneToMany(() => Transaction, (transaction) => transaction.payer)
+  payments?: Transaction[];
+
+  /**
+   * Transactions where the user was the recipient of a payment (payee)
+   */
+  @OneToMany(() => Transaction, (transaction) => transaction.payee)
+  receipts?: Transaction[];
+
+  /**
+   * Transactions created by the user
+   */
+  @OneToMany(() => Transaction, (transaction) => transaction.creator)
+  createdTransactions?: Transaction[];
 }

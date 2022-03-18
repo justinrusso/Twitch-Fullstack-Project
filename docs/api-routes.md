@@ -132,6 +132,76 @@ Logs in a guest as a demo user
 }
 ```
 
+## Transactions
+
+### POST /api/transactions
+
+_Note: A user must be authenticated to access this API endpoint_
+
+**Request**:
+
+```ts
+{
+  /**
+   * The user to pay or request
+   */
+  to: UserId;
+
+  /**
+   * The type or transaction request
+   */
+  type: "payment" | "request";
+
+  /**
+   * A whole number greater than 50
+   */
+  amount: number;
+
+  /**
+   * A note to go along with the payment / request
+   */
+  memo: string;
+}
+```
+
+**Valid Response**:
+
+```ts
+{
+  data: {
+    id: TransactionId;
+    payer: PublicUserData;
+    payee: PublicUserData;
+    creator: PublicUserData;
+    amount: number;
+    memo: string;
+    paid: boolean;
+
+    /**
+     * A timestamp with timezone string
+     */
+    createdAt: string;
+    /**
+     * A timestamp with timezone string
+     */
+    updatedAt: string;
+  }
+}
+```
+
+**Invalid Response**:
+
+```ts
+{
+  errors: {
+    to?: string;
+    type?: string;
+    amount?: string;
+    memo?: string;
+  }
+}
+```
+
 ## Transfers
 
 ### POST /api/transfers

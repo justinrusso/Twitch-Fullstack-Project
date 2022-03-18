@@ -9,7 +9,14 @@ type TransactionData = {
   readonly amount: number;
   readonly memo: string;
   readonly paid: boolean;
+
+  /**
+   * A timestamp with timezone string
+   */
   readonly createdAt: string;
+  /**
+   * A timestamp with timezone string
+   */
   readonly updatedAt: string;
 };
 

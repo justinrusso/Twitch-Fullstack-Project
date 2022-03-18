@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import AuthRedirect from "./components/auth/AuthRedirect";
 import AccountLayout from "./components/layouts/AccountLayout";
 import { useAppDispatch } from "./hooks/redux";
+import NewTransactionPage from "./pages/account/TransactionPage";
 import TransferPage from "./pages/account/TransferPage";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
@@ -40,6 +41,7 @@ export default function App(): JSX.Element {
             }
           >
             <Route index />
+            <Route path="transactions/new" element={<NewTransactionPage />} />
             <Route path="transfer" element={<TransferPage />} />
           </Route>
         </Routes>

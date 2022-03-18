@@ -53,7 +53,11 @@ export default function UserSearchField({
   const allUsers = useAppSelector(selectAllUsers());
 
   const getUsersThrottled = useMemo(
-    () => throttle((key: string) => dispatch(getUsers({ key })).unwrap(), 200),
+    () =>
+      throttle(
+        (key: string) => dispatch(getUsers({ key, ignoreSelf: true })).unwrap(),
+        200
+      ),
     [dispatch]
   );
 

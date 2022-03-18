@@ -4,6 +4,7 @@ import SafeUserData from "../../../../types/entity/data/SafeUserData";
 import { createTransaction } from "../transactions/thunks";
 import { createTransfer } from "../transfers/thunks";
 import {
+  getUserData,
   loginDemoUser,
   loginUser,
   logoutUser,
@@ -50,7 +51,13 @@ const userSlice = createSlice({
     });
 
     builder.addMatcher(
-      isFulfilled(loginDemoUser, loginUser, restoreUserSession, signupUser),
+      isFulfilled(
+        getUserData,
+        loginDemoUser,
+        loginUser,
+        restoreUserSession,
+        signupUser
+      ),
       (_state, action) => {
         return action.payload;
       }

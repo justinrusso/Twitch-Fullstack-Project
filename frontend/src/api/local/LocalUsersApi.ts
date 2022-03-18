@@ -5,7 +5,10 @@ const buildUsersRoute = routeBuilder("/api/users");
 
 export default class LocalUsersApi {
   static async getUsers(queryParams: UsersQueryRequest) {
-    const params = new URLSearchParams(queryParams);
+    const params = new URLSearchParams({
+      ...queryParams,
+      ignoreSelf: String(queryParams.ignoreSelf),
+    });
     return fetchApi(buildUsersRoute(`?${params.toString()}`));
   }
 }

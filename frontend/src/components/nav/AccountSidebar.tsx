@@ -95,7 +95,7 @@ export default function AccountSidebar({
             fullWidth
             onClick={() => navigate("transactions/new")}
           >
-            Send Money
+            Pay or Request
           </Button>
         </ListItem>
       </List>

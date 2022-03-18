@@ -18,6 +18,17 @@ type OmittedAutocompleteProps =
 
 type UserSearchFieldProps = {
   /**
+   * Toggles the error state of the text field
+   */
+  error?: boolean;
+
+  /**
+   * Gives context about the field's input.
+   * Can also be used to provide feedback to the user about an error.
+   */
+  helperText?: string;
+
+  /**
    * The input's label to be displayed.
    * @default "Select a user"
    */
@@ -40,6 +51,8 @@ type UserSearchFieldProps = {
 >;
 
 export default function UserSearchField({
+  error,
+  helperText,
   label = "Select a user",
   onChange,
   selectedUser,
@@ -82,7 +95,13 @@ export default function UserSearchField({
       // Disable built in filtering
       filterOptions={(x) => x}
       renderInput={(params) => (
-        <TextField {...params} label={label} required={required} />
+        <TextField
+          {...params}
+          label={label}
+          error={error}
+          required={required}
+          helperText={helperText}
+        />
       )}
       onInputChange={(_event, newInputValue) => {
         setInputValue(newInputValue);

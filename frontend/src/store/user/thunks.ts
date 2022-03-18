@@ -7,6 +7,15 @@ import LoginResponse from "../../../../types/responses/LoginResponse";
 import SignupResponse from "../../../../types/responses/SignupResponse";
 import LocalAuthApi from "../../api/local/LocalAuthApi";
 
+export const getUserData = createAsyncThunk(
+  "user/getUserData",
+  async (): Promise<SafeUserData | null> => {
+    const res = await LocalAuthApi.restoreSession();
+    const resData: LoginResponse = await res.json();
+    return resData.data || null;
+  }
+);
+
 export const loginUser = createAsyncThunk(
   "user/loginUser",
   async (data: LoginRequest, thunkAPI): Promise<SafeUserData> => {

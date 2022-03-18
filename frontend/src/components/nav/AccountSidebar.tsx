@@ -89,15 +89,19 @@ export default function AccountSidebar({
         <ListItem button onClick={handleLogout}>
           <ListItemText primary="Log out" />
         </ListItem>
-        <ListItem sx={{ p: 4 }}>
-          <Button
-            variant="contained"
-            fullWidth
-            onClick={() => navigate("transactions/new")}
-          >
-            Pay or Request
-          </Button>
-        </ListItem>
+        {!Boolean(
+          matchPath("/account/transactions/new", location.pathname)
+        ) && (
+          <ListItem sx={{ p: 4 }}>
+            <Button
+              variant="contained"
+              fullWidth
+              onClick={() => navigate("transactions/new")}
+            >
+              Pay or Request
+            </Button>
+          </ListItem>
+        )}
       </List>
     </>
   );

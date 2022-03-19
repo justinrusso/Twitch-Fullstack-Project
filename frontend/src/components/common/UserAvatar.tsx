@@ -40,8 +40,9 @@ export default function UserAvatar({
     width,
     height,
   };
+  const fullName = `${firstName} ${lastName}`;
   if (src) {
-    return <Avatar sx={styles} />;
+    return <Avatar sx={styles} alt={fullName} src={src} />;
   }
   return (
     <Avatar

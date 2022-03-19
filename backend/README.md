@@ -1,6 +1,16 @@
-# Backend
+# PayMee Backend
 
 ## Development
+
+To get started:
+
+1. Clone the repository
+2. Create a PostgreSQL user and set up a database with the user as the owner.
+3. `cd` into `/backend` and run `npm install`.
+4. Set up an `.env` file based on the example provided in `.env.example`.
+5. Run `npm run db:migration:run` to run all the migrations.
+6. Run `npm run db:seed:run` to seed the database.
+7. Run `npm run start` to start the development server.
 
 ### Database
 

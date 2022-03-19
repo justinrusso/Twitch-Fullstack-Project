@@ -22,17 +22,17 @@ function stringToColor(str: string) {
 }
 
 type UserAvatarProps = {
-  firstName?: string;
+  firstName: string;
   height?: number;
-  lastName?: string;
+  lastName: string;
   src?: string;
   width?: number;
 };
 
 export default function UserAvatar({
-  firstName = "",
+  firstName,
   height,
-  lastName = "",
+  lastName,
   src,
   width,
 }: UserAvatarProps): JSX.Element {

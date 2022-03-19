@@ -6,6 +6,7 @@ import { BankTransferResponseErrors } from "../../../../types/responses/BankTran
 import ConfirmationDialog from "../../components/common/ConfirmationDialog";
 import CurrencyTextField from "../../components/common/CurrencyTextField";
 import { useAppBar } from "../../contexts/AppBarProvider";
+import { useTemporaryNotifications } from "../../contexts/TemporaryNotificationsProvider";
 import useFormFields from "../../hooks/form-fields";
 import { useAppDispatch } from "../../hooks/redux";
 import { createTransfer } from "../../store/transfers/thunks";
@@ -13,6 +14,7 @@ import { createTransfer } from "../../store/transfers/thunks";
 export default function TransferPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const temporaryNotifications = useTemporaryNotifications();
 
   const { setTitle } = useAppBar();
 
@@ -28,6 +30,8 @@ export default function TransferPage(): JSX.Element {
   const [errors, setErrors] = useState<Partial<BankTransferResponseErrors>>({});
   const [confirmationOpen, setConfirmationOpen] = useState(false);
 
+  const transferAction = fields.deposit ? "Deposit" : "Withdraw";
+
   const handleConfirm = async () => {
     setErrors({});
 
@@ -39,6 +43,10 @@ export default function TransferPage(): JSX.Element {
         })
       ).unwrap();
       navigate("..");
+      temporaryNotifications.enqueueNotification({
+        message: `${transferAction} successful!`,
+        severity: "success",
+      });
     } catch (error) {
       if (error instanceof Error) {
         throw error;
@@ -47,8 +55,6 @@ export default function TransferPage(): JSX.Element {
       setErrors(error as BankTransferResponseErrors);
     }
   };
-
-  const transferAction = fields.deposit ? "Deposit" : "Withdraw";
 
   return (
     <>

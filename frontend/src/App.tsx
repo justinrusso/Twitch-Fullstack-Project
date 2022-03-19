@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import AuthRedirect from "./components/auth/AuthRedirect";
 import AccountLayout from "./components/layouts/AccountLayout";
 import { useAppDispatch } from "./hooks/redux";
+import FriendsPage from "./pages/account/FriendsPage";
 import NotificationsPage from "./pages/account/NotificationsPage";
 import NewTransactionPage from "./pages/account/TransactionPage";
 import TransferPage from "./pages/account/TransferPage";
@@ -42,6 +43,7 @@ export default function App(): JSX.Element {
             }
           >
             <Route index />
+            <Route path="friends" element={<FriendsPage />} />
             <Route path="notifications" element={<NotificationsPage />} />
             <Route path="transactions/new" element={<NewTransactionPage />} />
             <Route path="transfer" element={<TransferPage />} />

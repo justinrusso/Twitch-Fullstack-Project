@@ -43,6 +43,11 @@ export default function AccountSidebar({
       .then(() => navigate("/"));
   };
 
+  const navigateTo = (path: string) => {
+    navigate(path);
+    closeDrawer();
+  };
+
   const drawerContents = (
     <>
       <Box p={4}>
@@ -75,7 +80,7 @@ export default function AccountSidebar({
       <List>
         <ListItemButton
           selected={Boolean(matchPath("/account", location.pathname))}
-          onClick={() => navigate("")}
+          onClick={() => navigateTo("")}
         >
           <ListItemText primary="Home" />
         </ListItemButton>
@@ -83,13 +88,13 @@ export default function AccountSidebar({
           selected={Boolean(
             matchPath("/account/notifications", location.pathname)
           )}
-          onClick={() => navigate("notifications")}
+          onClick={() => navigateTo("notifications")}
         >
           <ListItemText primary="Notifications" />
         </ListItemButton>
         <ListItemButton
           selected={Boolean(matchPath("/account/transfer", location.pathname))}
-          onClick={() => navigate("transfer")}
+          onClick={() => navigateTo("transfer")}
         >
           <ListItemText primary="Manage Funds" />
         </ListItemButton>
@@ -104,7 +109,7 @@ export default function AccountSidebar({
             <Button
               variant="contained"
               fullWidth
-              onClick={() => navigate("transactions/new")}
+              onClick={() => navigateTo("transactions/new")}
             >
               Pay or Request
             </Button>

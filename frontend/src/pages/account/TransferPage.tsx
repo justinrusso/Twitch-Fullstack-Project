@@ -107,6 +107,7 @@ export default function TransferPage(): JSX.Element {
             setField("amount", String(newvalue));
           }}
           error={!!errors.amount}
+          helperText={errors.amount}
         />
         <Button type="submit" variant="contained">
           {transferAction}

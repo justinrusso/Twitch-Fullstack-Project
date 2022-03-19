@@ -1,20 +1,45 @@
 import { Router } from "express";
 import expressAsyncHandler from "express-async-handler";
-import { getManager, getRepository } from "typeorm";
+import { getCustomRepository, getManager, getRepository } from "typeorm";
 
 import UserId from "../../../../types/entity/ids/UserId";
 import TransactionRequest from "../../../../types/requests/TransactionRequest";
+import TransactionsQueryRequest from "../../../../types/requests/TransactionsQueryRequest";
 import TransactionResponse, {
   TransactionResponseErrors,
 } from "../../../../types/responses/TransactionResponse";
+import TransactionsResponse from "../../../../types/responses/TransactionsResponse";
 import HttpError from "../../common/HttpError";
 import { requireAuth } from "../../common/middlewares/auth";
 import transactionValidatorMiddlewares from "../../common/middlewares/validation/transaction";
+import transactionsQueryValidatorMiddlewares from "../../common/middlewares/validation/transactions-query";
 import { ResponseWithUserRequired } from "../../common/responses";
 import Transaction from "../../db/entities/Transaction";
 import User from "../../db/entities/User";
+import TransactionRepository from "../../db/repositories/TransactionRepository";
 
 const transactionsRouter = Router();
+
+transactionsRouter.get(
+  "/",
+  ...requireAuth,
+  ...transactionsQueryValidatorMiddlewares,
+  expressAsyncHandler(async (req, res) => {
+    const { status, type } = req.query as TransactionsQueryRequest;
+
+    const user = (res as ResponseWithUserRequired).locals.user;
+
+    const transactions = await getCustomRepository(
+      TransactionRepository
+    ).findUserTransactions(user.id, { status, type });
+
+    const responseData: TransactionsResponse = {
+      data: transactions.map((transaction) => transaction.toJSON()),
+    };
+
+    res.json(responseData);
+  })
+);
 
 transactionsRouter.post(
   "/",

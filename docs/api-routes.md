@@ -134,6 +134,67 @@ Logs in a guest as a demo user
 
 ## Transactions
 
+### GET /api/transactions
+
+_Note: A user must be authenticated to access this API endpoint_
+
+**Query Parameters**:
+
+```ts
+{
+  /**
+   * Filters the the status of the transaction.
+   * Selects any status if omitted
+   */
+  status?: "paid" | "unpaid";
+
+  /**
+   * Filters between transactions where the user is the payer or the payee.
+   * Selects both types if omitted
+   */
+  type?: "payer" | "payee";
+}
+```
+
+**Valid Response**:
+
+Returns all results from the query
+
+```ts
+{
+  data: {
+    id: TransactionId;
+    payer: PublicUserData;
+    payee: PublicUserData;
+    creator: PublicUserData;
+    amount: number;
+    memo: string;
+    paid: boolean;
+
+    /**
+     * A timestamp with timezone string
+     */
+    createdAt: string;
+    /**
+     * A timestamp with timezone string
+     */
+    updatedAt: string;
+  }
+  [];
+}
+```
+
+**Invalid Response**:
+
+```ts
+{
+  errors: {
+    status?: string;
+    type?: string;
+  }
+}
+```
+
 ### POST /api/transactions
 
 _Note: A user must be authenticated to access this API endpoint_

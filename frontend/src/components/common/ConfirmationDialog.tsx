@@ -37,7 +37,7 @@ export default function ConfirmationDialog({
   ...dialogProps
 }: ConfirmationDialogProps): JSX.Element {
   return (
-    <Dialog {...dialogProps}>
+    <Dialog onClose={onCancel} {...dialogProps}>
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>{children}</DialogContent>
       <DialogActions>

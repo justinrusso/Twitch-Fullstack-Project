@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 
 import AppBarProvider from "../../contexts/AppBarProvider";
+import TemporaryNotificationsProvider from "../../contexts/TemporaryNotificationsProvider";
 import { useAppDispatch } from "../../hooks/redux";
 import { getUserData } from "../../store/user/thunks";
 import AccountAppBar from "../nav/AccountAppBar";
@@ -29,31 +30,33 @@ export default function AccountLayout() {
   }, [dispatch]);
 
   return (
-    <AppBarProvider defaultTitle="Account Home">
-      <AccountAppBar
-        toggleMenu={() => setMobileDrawerOpen((prev) => !prev)}
-        sx={{
-          display: { [drawerBreakpoint]: "none" },
-        }}
-      />
-      <Box sx={{ display: "flex" }}>
-        <AccountSidebar
-          closeDrawer={() => setMobileDrawerOpen((prev) => !prev)}
-          drawerBreakpoint={drawerBreakpoint}
-          showDrawer={mobileDrawerOpen}
-          width={drawerWidth}
-        />
-        <Container
-          component="main"
+    <TemporaryNotificationsProvider>
+      <AppBarProvider defaultTitle="Account Home">
+        <AccountAppBar
+          toggleMenu={() => setMobileDrawerOpen((prev) => !prev)}
           sx={{
-            flexGrow: 1,
-            py: 3,
-            width: { [drawerBreakpoint]: `calc(100% - ${drawerWidth}px)` },
+            display: { [drawerBreakpoint]: "none" },
           }}
-        >
-          <Outlet />
-        </Container>
-      </Box>
-    </AppBarProvider>
+        />
+        <Box sx={{ display: "flex" }}>
+          <AccountSidebar
+            closeDrawer={() => setMobileDrawerOpen((prev) => !prev)}
+            drawerBreakpoint={drawerBreakpoint}
+            showDrawer={mobileDrawerOpen}
+            width={drawerWidth}
+          />
+          <Container
+            component="main"
+            sx={{
+              flexGrow: 1,
+              py: 3,
+              width: { [drawerBreakpoint]: `calc(100% - ${drawerWidth}px)` },
+            }}
+          >
+            <Outlet />
+          </Container>
+        </Box>
+      </AppBarProvider>
+    </TemporaryNotificationsProvider>
   );
 }

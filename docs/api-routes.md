@@ -132,6 +132,212 @@ Logs in a guest as a demo user
 }
 ```
 
+## Transactions
+
+### GET /api/transactions
+
+_Note: A user must be authenticated to access this API endpoint_
+
+**Query Parameters**:
+
+```ts
+{
+  /**
+   * Filters the the status of the transaction.
+   * Selects any status if omitted
+   */
+  status?: "paid" | "unpaid";
+
+  /**
+   * Filters between transactions where the user is the payer or the payee.
+   * Selects both types if omitted
+   */
+  type?: "payer" | "payee";
+}
+```
+
+**Valid Response**:
+
+Returns all results from the query
+
+```ts
+{
+  data: {
+    id: TransactionId;
+    payer: PublicUserData;
+    payee: PublicUserData;
+    creator: PublicUserData;
+    amount: number;
+    memo: string;
+    paid: boolean;
+
+    /**
+     * A timestamp with timezone string
+     */
+    createdAt: string;
+    /**
+     * A timestamp with timezone string
+     */
+    updatedAt: string;
+  }
+  [];
+}
+```
+
+**Invalid Response**:
+
+```ts
+{
+  errors: {
+    status?: string;
+    type?: string;
+  }
+}
+```
+
+### POST /api/transactions
+
+_Note: A user must be authenticated to access this API endpoint_
+
+**Request**:
+
+```ts
+{
+  /**
+   * The user to pay or request
+   */
+  to: UserId;
+
+  /**
+   * The type or transaction request
+   */
+  type: "payment" | "request";
+
+  /**
+   * A whole number greater than 50
+   */
+  amount: number;
+
+  /**
+   * A note to go along with the payment / request
+   */
+  memo: string;
+}
+```
+
+**Valid Response**:
+
+```ts
+{
+  data: {
+    id: TransactionId;
+    payer: PublicUserData;
+    payee: PublicUserData;
+    creator: PublicUserData;
+    amount: number;
+    memo: string;
+    paid: boolean;
+
+    /**
+     * A timestamp with timezone string
+     */
+    createdAt: string;
+    /**
+     * A timestamp with timezone string
+     */
+    updatedAt: string;
+  }
+}
+```
+
+**Invalid Response**:
+
+```ts
+{
+  errors: {
+    to?: string;
+    type?: string;
+    amount?: string;
+    memo?: string;
+  }
+}
+```
+
+### PATCH /api/transactions/:id
+
+_Note: A user must be authenticated to access this API endpoint_
+
+**Request**:
+
+```ts
+{
+  paid: boolean;
+}
+```
+
+**Valid Response**:
+
+```ts
+{
+  data: {
+    id: TransactionId;
+    payer: PublicUserData;
+    payee: PublicUserData;
+    creator: PublicUserData;
+    amount: number;
+    memo: string;
+    paid: boolean;
+
+    /**
+     * A timestamp with timezone string
+     */
+    createdAt: string;
+    /**
+     * A timestamp with timezone string
+     */
+    updatedAt: string;
+  }
+}
+```
+
+**Invalid Response**:
+
+```ts
+{
+  errors: {
+    /**
+     * An error if the payer does not have the funds to pay
+     */
+    amount?: string;
+    paid?: string;
+  }
+}
+```
+
+### DELETE /api/transactions/:id
+
+_Note: A user must be authenticated to access this API endpoint_
+
+**Valid Response**:
+
+```ts
+{
+  data: {
+    id: TransactionId;
+  }
+}
+```
+
+**Invalid Response**:
+
+```ts
+{
+  errors: {
+    id?: TransactionId;
+  }
+}
+```
+
 ## Transfers
 
 ### POST /api/transfers

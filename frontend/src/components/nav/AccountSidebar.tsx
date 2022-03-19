@@ -54,8 +54,8 @@ export default function AccountSidebar({
 
         <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
           <UserAvatar
-            firstName={user?.firstName}
-            lastName={user?.lastName}
+            firstName={user?.firstName || ""}
+            lastName={user?.lastName || ""}
             height={80}
             width={80}
           />
@@ -80,6 +80,14 @@ export default function AccountSidebar({
           <ListItemText primary="Home" />
         </ListItemButton>
         <ListItemButton
+          selected={Boolean(
+            matchPath("/account/notifications", location.pathname)
+          )}
+          onClick={() => navigate("notifications")}
+        >
+          <ListItemText primary="Notifications" />
+        </ListItemButton>
+        <ListItemButton
           selected={Boolean(matchPath("/account/transfer", location.pathname))}
           onClick={() => navigate("transfer")}
         >
@@ -89,15 +97,19 @@ export default function AccountSidebar({
         <ListItem button onClick={handleLogout}>
           <ListItemText primary="Log out" />
         </ListItem>
-        <ListItem sx={{ p: 4 }}>
-          <Button
-            variant="contained"
-            fullWidth
-            onClick={() => navigate("transactions/new")}
-          >
-            Send Money
-          </Button>
-        </ListItem>
+        {!Boolean(
+          matchPath("/account/transactions/new", location.pathname)
+        ) && (
+          <ListItem sx={{ p: 4 }}>
+            <Button
+              variant="contained"
+              fullWidth
+              onClick={() => navigate("transactions/new")}
+            >
+              Pay or Request
+            </Button>
+          </ListItem>
+        )}
       </List>
     </>
   );

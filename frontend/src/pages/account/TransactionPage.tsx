@@ -1,25 +1,55 @@
-import { Typography, Box, Button, TextField } from "@mui/material";
-import { FormEvent, useState } from "react";
+import { Typography, Box, Button, TextField, Stack } from "@mui/material";
+import { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import PublicUserData from "../../../../types/entity/data/PublicUserData";
+import TransactionRequest from "../../../../types/requests/TransactionRequest";
 import { TransactionResponseErrors } from "../../../../types/responses/TransactionResponse";
 import ConfirmationDialog from "../../components/common/ConfirmationDialog";
 import CurrencyTextField from "../../components/common/CurrencyTextField";
 import UserSearchField from "../../components/common/UserSearchField";
+import { useAppBar } from "../../contexts/AppBarProvider";
+import { useTemporaryNotifications } from "../../contexts/TemporaryNotificationsProvider";
 import useFormFields from "../../hooks/form-fields";
 import { useAppDispatch } from "../../hooks/redux";
 import { createTransaction } from "../../store/transactions/thunks";
+import { capitalize } from "../../utils/string";
+
+function formatConfirmationText(
+  type: TransactionRequest["type"],
+  amount: string,
+  to: PublicUserData
+): string {
+  const formattedAmount = parseFloat(amount).toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+  const fullName = `${to.firstName} ${to.lastName}`;
+
+  const action = type === "request" ? "request" : "send";
+  const direction = type === "request" ? "from" : "to";
+
+  return `Are you sure you want to ${action} ${formattedAmount} ${direction} ${fullName}?`;
+}
 
 export default function NewTransactionPage(): JSX.Element {
   const dispatch = useAppDispatch();
+  const temporaryNotifications = useTemporaryNotifications();
   const navigate = useNavigate();
+
+  const { setTitle } = useAppBar();
+
+  useEffect(() => {
+    setTitle("Pay & Request");
+  }, [setTitle]);
 
   const { fields, setField } = useFormFields({
     amount: "", // NOTE: This should be multiplied by 100 when sending
     to: null as PublicUserData | null,
     memo: "",
   });
+  const [transactionType, setTransactionType] =
+    useState<TransactionRequest["type"]>("payment");
 
   const [errors, setErrors] = useState<TransactionResponseErrors>({});
   const [confirmationOpen, setConfirmationOpen] = useState(false);
@@ -38,9 +68,13 @@ export default function NewTransactionPage(): JSX.Element {
           amount: Math.round(parseFloat(fields.amount) * 100),
           to: fields.to.id,
           memo: fields.memo,
-          type: "payment",
+          type: transactionType,
         })
       ).unwrap();
+      temporaryNotifications.enqueueNotification({
+        message: `${capitalize(transactionType)} sent!`,
+        severity: "success",
+      });
       navigate("..");
     } catch (error) {
       if (error instanceof Error) {
@@ -68,7 +102,7 @@ export default function NewTransactionPage(): JSX.Element {
         }}
       >
         <Typography variant="h4" component="h1" textAlign="center">
-          Pay
+          Pay & Request
         </Typography>
         <Box
           component="form"
@@ -120,23 +154,37 @@ export default function NewTransactionPage(): JSX.Element {
             error={!!errors.memo}
             helperText={errors.memo}
           />
-          <Button type="submit" variant="contained" fullWidth>
-            Pay
-          </Button>
+          <Stack spacing={3} direction="row" sx={{ width: "100%" }}>
+            <Button
+              type="submit"
+              variant="contained"
+              fullWidth
+              onClick={() => setTransactionType("payment")}
+            >
+              Pay
+            </Button>
+            <Button
+              type="submit"
+              variant="contained"
+              fullWidth
+              onClick={() => setTransactionType("request")}
+            >
+              Request
+            </Button>
+          </Stack>
         </Box>
         <ConfirmationDialog
-          title="Confirm Payment"
+          title={`Confirm ${
+            transactionType === "payment" ? "Payment" : "Request"
+          }`}
           onCancel={() => setConfirmationOpen(false)}
           onConfirm={handleConfirm}
           open={confirmationOpen}
         >
           <Typography>
-            Are you sure you want to send{" "}
-            {parseFloat(fields.amount).toLocaleString("en-US", {
-              style: "currency",
-              currency: "USD",
-            })}{" "}
-            to {fields.to?.firstName} {fields.to?.lastName}?
+            {/* NOTE: The `to` field must be validated as not null before a confirmation is displayed */}
+            {fields.to &&
+              formatConfirmationText(transactionType, fields.amount, fields.to)}
           </Typography>
         </ConfirmationDialog>
       </Box>

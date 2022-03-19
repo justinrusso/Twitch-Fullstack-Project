@@ -1,4 +1,3 @@
-import PublicUserData from "../entity/data/PublicUserData";
 import TransactionData from "../entity/data/TransactionData";
 import BaseReponse from "./BaseResponse";
 

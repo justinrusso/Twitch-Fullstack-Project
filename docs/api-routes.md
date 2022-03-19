@@ -305,6 +305,10 @@ _Note: A user must be authenticated to access this API endpoint_
 ```ts
 {
   errors: {
+    /**
+     * An error if the payer does not have the funds to pay
+     */
+    amount?: string;
     paid?: string;
   }
 }

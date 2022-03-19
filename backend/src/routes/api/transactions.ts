@@ -162,10 +162,21 @@ transactionsRouter.patch(
     }
 
     const { paid } = req.body as TransactionPatchRequest;
+    // Check if we are attempting to pay the transaction
+    const isPayment = typeof paid === "boolean" && paid && !transaction.paid;
 
     transaction.paid = paid ?? transaction.paid;
 
-    if (transaction.paid) {
+    if (isPayment) {
+      // Ensure payer has enough money
+      if (transaction.payer.balance < transaction.amount) {
+        const error = new HttpError<TransactionPatchResponseErrors>(400);
+        error.errors = {
+          amount: "Insufficient Funds",
+        };
+        return next(error);
+      }
+
       // Update the user's balances if this is transaction is being completed now
       transaction.payer.balance -= transaction.amount;
       transaction.payee.balance += transaction.amount;

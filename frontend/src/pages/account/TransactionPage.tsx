@@ -8,9 +8,11 @@ import { TransactionResponseErrors } from "../../../../types/responses/Transacti
 import ConfirmationDialog from "../../components/common/ConfirmationDialog";
 import CurrencyTextField from "../../components/common/CurrencyTextField";
 import UserSearchField from "../../components/common/UserSearchField";
+import { useTemporaryNotifications } from "../../contexts/TemporaryNotificationsProvider";
 import useFormFields from "../../hooks/form-fields";
 import { useAppDispatch } from "../../hooks/redux";
 import { createTransaction } from "../../store/transactions/thunks";
+import { capitalize } from "../../utils/string";
 
 function formatConfirmationText(
   type: TransactionRequest["type"],
@@ -31,6 +33,7 @@ function formatConfirmationText(
 
 export default function NewTransactionPage(): JSX.Element {
   const dispatch = useAppDispatch();
+  const temporaryNotifications = useTemporaryNotifications();
   const navigate = useNavigate();
 
   const { fields, setField } = useFormFields({
@@ -61,6 +64,10 @@ export default function NewTransactionPage(): JSX.Element {
           type: transactionType,
         })
       ).unwrap();
+      temporaryNotifications.enqueueNotification({
+        message: `${capitalize(transactionType)} sent!`,
+        severity: "success",
+      });
       navigate("..");
     } catch (error) {
       if (error instanceof Error) {

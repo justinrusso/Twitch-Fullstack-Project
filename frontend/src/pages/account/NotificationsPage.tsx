@@ -1,4 +1,4 @@
-import { Button, Divider, List, Typography } from "@mui/material";
+import { Box, Button, Divider, List, Typography } from "@mui/material";
 import { Fragment, useEffect, useState } from "react";
 
 import TransactionData from "../../../../types/entity/data/TransactionData";
@@ -99,44 +99,62 @@ export default function NotificationsPage(): JSX.Element {
       <Typography variant="h4" component="h1" textAlign="center">
         Notifications
       </Typography>
-      <List sx={{ width: "100%" }}>
-        {transactions.map((transaction, i) => (
-          <Fragment key={transaction.id}>
-            <TransactionListItem
-              transaction={transaction}
-              actions={
-                <>
-                  <Button
-                    onClick={() => showConfirmation("decline", transaction)}
-                  >
-                    Decline
-                  </Button>
-                  <Button onClick={() => showConfirmation("pay", transaction)}>
-                    Pay
-                  </Button>
-                </>
-              }
-            />
-            {i !== transactions.length - 1 && (
-              <Divider variant="inset" component="li" />
+      {transactions.length > 0 ? (
+        <>
+          <List sx={{ width: "100%" }}>
+            {transactions.map((transaction, i) => (
+              <Fragment key={transaction.id}>
+                <TransactionListItem
+                  transaction={transaction}
+                  actions={
+                    <>
+                      <Button
+                        onClick={() => showConfirmation("decline", transaction)}
+                      >
+                        Decline
+                      </Button>
+                      <Button
+                        onClick={() => showConfirmation("pay", transaction)}
+                      >
+                        Pay
+                      </Button>
+                    </>
+                  }
+                />
+                {i !== transactions.length - 1 && (
+                  <Divider variant="inset" component="li" />
+                )}
+              </Fragment>
+            ))}
+          </List>
+          <ConfirmationDialog
+            title={`${capitalize(actionType)} Transaction Request`}
+            onCancel={() => setSelectedTransaction(null)}
+            onConfirm={() => handleConfirm(selectedTransaction, actionType)}
+            open={selectedTransaction !== null}
+          >
+            {selectedTransaction && (
+              <Typography>
+                Are you sure you'd like to {actionType} the payment request from{" "}
+                {getUsersFullName(selectedTransaction.creator)} for{" "}
+                {formatCurrency(selectedTransaction.amount)}?
+              </Typography>
             )}
-          </Fragment>
-        ))}
-      </List>
-      <ConfirmationDialog
-        title={`${capitalize(actionType)} Transaction Request`}
-        onCancel={() => setSelectedTransaction(null)}
-        onConfirm={() => handleConfirm(selectedTransaction, actionType)}
-        open={selectedTransaction !== null}
-      >
-        {selectedTransaction && (
-          <Typography>
-            Are you sure you'd like to {actionType} the payment request from{" "}
-            {getUsersFullName(selectedTransaction.creator)} for{" "}
-            {formatCurrency(selectedTransaction.amount)}?
-          </Typography>
-        )}
-      </ConfirmationDialog>
+          </ConfirmationDialog>
+        </>
+      ) : (
+        <>
+          <Box pt={2}>
+            <Typography
+              variant="body2"
+              textAlign="center"
+              sx={{ color: "text.secondary" }}
+            >
+              You're all caught up!
+            </Typography>
+          </Box>
+        </>
+      )}
     </>
   );
 }

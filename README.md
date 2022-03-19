@@ -2,6 +2,8 @@
 
 PayMee is an application where users can transfer money between friends. Money must be transferred into their account from a bank before a transaction between friends can be made. At any time, a user can also withdraw money from their account back into their bank. Bank transfers are handled through Stripe's API.
 
+[![Live Link](https://img.shields.io/badge/Live%20Link-1976d2?style=for-the-badge)](https://jrusso-paymee.herokuapp.com/)
+
 ## Documentation
 
 [API Routes](docs/api-routes.md)

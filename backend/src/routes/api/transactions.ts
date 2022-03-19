@@ -23,6 +23,9 @@ import User from "../../db/entities/User";
 import TransactionRepository from "../../db/repositories/TransactionRepository";
 import transactionPatchValidatorMiddlewares from "../../common/middlewares/validation/transaction-patch";
 import TransactionPatchRequest from "../../../../types/requests/TransactionPatchRequest";
+import TransactionDeleteResponse, {
+  TransactionDeleteResponseErrors,
+} from "../../../../types/responses/TransactionDeleteResponse";
 
 const transactionsRouter = Router();
 
@@ -178,6 +181,49 @@ transactionsRouter.patch(
 
     const responseData: TransactionPatchResponse = {
       data: transaction.toJSON(),
+    };
+
+    res.json(responseData);
+  })
+);
+
+transactionsRouter.delete(
+  "/:id(\\d+)",
+  ...requireAuth,
+  expressAsyncHandler(async (req, res, next) => {
+    const transactionId = parseInt(req.params.id) as TransactionId;
+
+    const user = (res as ResponseWithUserRequired).locals.user;
+
+    const transaction = await getCustomRepository(
+      TransactionRepository
+    ).findOne(transactionId);
+
+    if (!transaction) {
+      const error = new HttpError(404);
+      return next(error);
+    }
+
+    // Ensure the user is the payer or payee
+    if (transaction.payerId !== user.id) {
+      const error = new HttpError(403);
+      return next(error);
+    }
+
+    // Only allow a deletion if the transaction has not been paid
+    if (transaction.paid) {
+      const error = new HttpError<TransactionDeleteResponseErrors>(400);
+      error.errors = {
+        id: "The transaction with this id has already been paid",
+      };
+    }
+
+    await getRepository(Transaction).delete(transaction.id);
+
+    const responseData: TransactionDeleteResponse = {
+      data: {
+        id: transactionId,
+      },
     };
 
     res.json(responseData);

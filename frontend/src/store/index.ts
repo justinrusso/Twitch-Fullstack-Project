@@ -1,12 +1,14 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import type { Middleware } from "redux";
 
+import transactionsReducer from "./transactions";
 import userReducer from "./user";
 import usersReducer from "./users";
 
 const isDev = process.env.NODE_ENV !== "production";
 
 const rootReducer = combineReducers({
+  transactions: transactionsReducer,
   user: userReducer,
   users: usersReducer,
 });

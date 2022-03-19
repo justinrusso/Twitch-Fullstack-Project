@@ -1,7 +1,10 @@
 import { createSlice, isFulfilled } from "@reduxjs/toolkit";
 
 import SafeUserData from "../../../../types/entity/data/SafeUserData";
-import { createTransaction } from "../transactions/thunks";
+import {
+  createTransaction,
+  payTransactionRequest,
+} from "../transactions/thunks";
 import { createTransfer } from "../transfers/thunks";
 import {
   getUserData,
@@ -35,20 +38,23 @@ const userSlice = createSlice({
     });
 
     // Update the user's balance when a transaction is paid by the user
-    builder.addCase(createTransaction.fulfilled, (state, action) => {
-      if (!state) {
-        return;
+    builder.addMatcher(
+      isFulfilled(createTransaction, payTransactionRequest),
+      (state, action) => {
+        if (!state) {
+          return;
+        }
+
+        const { amount, payer } = action.payload;
+
+        // Ignore transactions not made by the user
+        if (payer.id !== state.id) {
+          return;
+        }
+
+        state.balance -= amount;
       }
-
-      const { amount, payer } = action.payload;
-
-      // Ignore transactions not made by the user
-      if (payer.id !== state.id) {
-        return;
-      }
-
-      state.balance -= amount;
-    });
+    );
 
     builder.addMatcher(
       isFulfilled(

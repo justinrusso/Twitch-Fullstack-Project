@@ -1,5 +1,5 @@
 import { Typography, Box, Button, TextField, Stack } from "@mui/material";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import PublicUserData from "../../../../types/entity/data/PublicUserData";
@@ -8,6 +8,7 @@ import { TransactionResponseErrors } from "../../../../types/responses/Transacti
 import ConfirmationDialog from "../../components/common/ConfirmationDialog";
 import CurrencyTextField from "../../components/common/CurrencyTextField";
 import UserSearchField from "../../components/common/UserSearchField";
+import { useAppBar } from "../../contexts/AppBarProvider";
 import { useTemporaryNotifications } from "../../contexts/TemporaryNotificationsProvider";
 import useFormFields from "../../hooks/form-fields";
 import { useAppDispatch } from "../../hooks/redux";
@@ -35,6 +36,12 @@ export default function NewTransactionPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const temporaryNotifications = useTemporaryNotifications();
   const navigate = useNavigate();
+
+  const { setTitle } = useAppBar();
+
+  useEffect(() => {
+    setTitle("Pay & Request");
+  }, [setTitle]);
 
   const { fields, setField } = useFormFields({
     amount: "", // NOTE: This should be multiplied by 100 when sending
@@ -95,7 +102,7 @@ export default function NewTransactionPage(): JSX.Element {
         }}
       >
         <Typography variant="h4" component="h1" textAlign="center">
-          Pay
+          Pay & Request
         </Typography>
         <Box
           component="form"

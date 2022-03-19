@@ -263,6 +263,77 @@ _Note: A user must be authenticated to access this API endpoint_
 }
 ```
 
+### PATCH /api/transactions/:id
+
+_Note: A user must be authenticated to access this API endpoint_
+
+**Request**:
+
+```ts
+{
+  paid: boolean;
+}
+```
+
+**Valid Response**:
+
+```ts
+{
+  data: {
+    id: TransactionId;
+    payer: PublicUserData;
+    payee: PublicUserData;
+    creator: PublicUserData;
+    amount: number;
+    memo: string;
+    paid: boolean;
+
+    /**
+     * A timestamp with timezone string
+     */
+    createdAt: string;
+    /**
+     * A timestamp with timezone string
+     */
+    updatedAt: string;
+  }
+}
+```
+
+**Invalid Response**:
+
+```ts
+{
+  errors: {
+    paid?: string;
+  }
+}
+```
+
+### DELETE /api/transactions/:id
+
+_Note: A user must be authenticated to access this API endpoint_
+
+**Valid Response**:
+
+```ts
+{
+  data: {
+    id: TransactionId;
+  }
+}
+```
+
+**Invalid Response**:
+
+```ts
+{
+  errors: {
+    id?: TransactionId;
+  }
+}
+```
+
 ## Transfers
 
 ### POST /api/transfers

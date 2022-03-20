@@ -24,4 +24,13 @@ export default class LocalFriendsApi {
       method: "DELETE",
     });
   }
+
+  static async requestFriendship(friendId: UserId) {
+    return fetchApiWithCsrf(buildFriendsRoute(""), {
+      method: "POST",
+      body: JSON.stringify({
+        id: friendId,
+      }),
+    });
+  }
 }

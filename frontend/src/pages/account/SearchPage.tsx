@@ -1,16 +1,20 @@
 import { Button, List, TextField, Typography } from "@mui/material";
 import throttle from "lodash.throttle";
 import { useEffect, useMemo, useState } from "react";
+
+import UserId from "../../../../types/entity/ids/UserId";
 import LoadingCircle from "../../components/common/LoadingCircle";
 import FriendListItem from "../../components/friends/FriendListItem";
+import { useTemporaryNotifications } from "../../contexts/TemporaryNotificationsProvider";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { getFriends } from "../../store/friends/thunks";
+import { getFriends, requestFriendship } from "../../store/friends/thunks";
 import { clearUsers } from "../../store/users";
 import { selectAllUsers } from "../../store/users/selectors";
 import { getUsers } from "../../store/users/thunks";
 
 export default function SearchPage(): JSX.Element {
   const dispatch = useAppDispatch();
+  const { enqueueNotification } = useTemporaryNotifications();
 
   const [loaded, setLoaded] = useState(false);
 
@@ -44,6 +48,21 @@ export default function SearchPage(): JSX.Element {
     getUsersThrottled(inputValue);
   }, [dispatch, getUsersThrottled, inputValue]);
 
+  const handleAddFriend = async (id: UserId) => {
+    try {
+      await dispatch(requestFriendship(id)).unwrap();
+      enqueueNotification({
+        message: `Request sent!`,
+        severity: "success",
+      });
+    } catch {
+      enqueueNotification({
+        message: `An unexpected error occured`,
+        severity: "error",
+      });
+    }
+  };
+
   if (!loaded) {
     return <LoadingCircle />;
   }
@@ -68,7 +87,9 @@ export default function SearchPage(): JSX.Element {
               friend={user}
               actions={
                 !friendshipsEntiies[user.id] ? (
-                  <Button>Add Friend</Button>
+                  <Button onClick={() => handleAddFriend(user.id)}>
+                    Add Friend
+                  </Button>
                 ) : undefined
               }
             />

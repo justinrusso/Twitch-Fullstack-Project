@@ -5,6 +5,7 @@ import UserId from "../../../../types/entity/ids/UserId";
 import FriendsQueryRequest from "../../../../types/requests/FriendsQueryRequest";
 import FriendDeleteResponse from "../../../../types/responses/FriendDeleteReponse";
 import FriendPatchResponse from "../../../../types/responses/FriendPatchResponse";
+import FriendPostResponse from "../../../../types/responses/FriendPostResponse";
 import FriendsResponse from "../../../../types/responses/FriendsResponse";
 import LocalFriendsApi from "../../api/local/LocalFriendsApi";
 
@@ -41,6 +42,20 @@ export const removeFriendship = createAsyncThunk(
   async (friendId: UserId, thunkAPI): Promise<{ id: UserId }> => {
     const res = await LocalFriendsApi.removeFriendship(friendId);
     const resData: FriendDeleteResponse = await res.json();
+
+    if (resData.errors || !resData.data) {
+      throw thunkAPI.rejectWithValue(resData.errors);
+    }
+
+    return resData.data;
+  }
+);
+
+export const requestFriendship = createAsyncThunk(
+  "friends/requestFriendship",
+  async (friendId: UserId, thunkAPI): Promise<FriendData> => {
+    const res = await LocalFriendsApi.requestFriendship(friendId);
+    const resData: FriendPostResponse = await res.json();
 
     if (resData.errors || !resData.data) {
       throw thunkAPI.rejectWithValue(resData.errors);

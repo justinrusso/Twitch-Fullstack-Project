@@ -1,8 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import FriendData from "../../../../types/entity/data/FriendData";
+import { addStringToSorted } from "../../utils/array";
 import { getUsersFullName } from "../../utils/string";
-import { acceptFriendship, getFriends, removeFriendship } from "./thunks";
+import {
+  acceptFriendship,
+  getFriends,
+  removeFriendship,
+  requestFriendship,
+} from "./thunks";
 
 const initialState = {
   entities: {} as Record<number, FriendData>,
@@ -46,6 +52,19 @@ const friendsSlice = createSlice({
     builder.addCase(removeFriendship.fulfilled, (state, action) => {
       delete state.entities[action.payload.id];
       state.order = state.order.filter((id) => id !== action.payload.id);
+    });
+
+    builder.addCase(requestFriendship.fulfilled, (state, action) => {
+      const friendId = action.payload.friend.id;
+
+      state.entities[friendId] = action.payload;
+      state.order = addStringToSorted(
+        state.order.map((id) => state.entities[id]),
+        action.payload,
+        {
+          getter: (data) => getUsersFullName(data.friend),
+        }
+      ).map((data) => data.friend.id);
     });
   },
 });

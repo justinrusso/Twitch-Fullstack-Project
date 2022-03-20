@@ -10,6 +10,21 @@ export type FriendWithRelations = SetRequired<Friend, "friend" | "user">;
 @EntityRepository(Friend)
 export default class FriendRepository extends AbstractRepository<Friend> {
   /**
+   * Finds the friendship between two users
+   * @param user1 The first user's id
+   * @param user2 The second user's id
+   */
+  find(user1: UserId, user2: UserId): Promise<FriendWithRelations | undefined> {
+    return this.repository.findOne({
+      where: [
+        { userId: user1, friendId: user2 },
+        { userId: user2, friendId: user1 },
+      ],
+      relations: ["friend", "user"],
+    }) as Promise<FriendWithRelations | undefined>;
+  }
+
+  /**
    * Finds friendships for a given user.
    * @param userId The user's id
    * @param args Additional arguments to filter the query

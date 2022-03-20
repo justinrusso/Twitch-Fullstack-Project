@@ -1,14 +1,18 @@
 import { Router } from "express";
 import expressAsyncHandler from "express-async-handler";
-import { getCustomRepository } from "typeorm";
+import { getCustomRepository, getRepository } from "typeorm";
 
 import FriendData from "../../../../types/entity/data/FriendData";
+import UserId from "../../../../types/entity/ids/UserId";
 import FriendsQueryRequest from "../../../../types/requests/FriendsQueryRequest";
+import FriendDeleteResponse from "../../../../types/responses/FriendDeleteReponse";
 import FriendsResponse from "../../../../types/responses/FriendsResponse";
+import HttpError from "../../common/HttpError";
 import { requireAuth } from "../../common/middlewares/auth";
 import friendsQueryValidatorMiddlewares from "../../common/middlewares/validation/friends-query";
 import { Mutable } from "../../common/Mutable";
 import { ResponseWithUserRequired } from "../../common/responses";
+import Friend from "../../db/entities/Friend";
 import FriendRepository from "../../db/repositories/FriendRepository";
 
 const friendsRouter = Router();
@@ -46,6 +50,34 @@ friendsRouter.get(
   })
 );
 
-export default friendsRouter;
+friendsRouter.delete(
+  "/:id(\\d+)",
+  ...requireAuth,
+  expressAsyncHandler(async (req, res, next) => {
+    const user = (res as ResponseWithUserRequired).locals.user;
 
-// Frontend has to determine who is the friend and who is the user'
+    const friendId = parseInt(req.params.id) as UserId;
+
+    const friendship = await getCustomRepository(FriendRepository).find(
+      user.id,
+      friendId
+    );
+
+    if (!friendship) {
+      const error = new HttpError(404);
+      return next(error);
+    }
+
+    await getRepository(Friend).delete(friendship);
+
+    const responseData: FriendDeleteResponse = {
+      data: {
+        id: friendId,
+      },
+    };
+
+    res.json(responseData);
+  })
+);
+
+export default friendsRouter;

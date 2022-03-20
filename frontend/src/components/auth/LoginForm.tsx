@@ -10,8 +10,9 @@ import {
 } from "@mui/material";
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { LoginResponseErrors } from "../../../../types/responses/LoginResponse";
 
+import LoginRequest from "../../../../types/requests/LoginRequest";
+import { LoginResponseErrors } from "../../../../types/responses/LoginResponse";
 import useFormFields from "../../hooks/form-fields";
 import { useAppDispatch } from "../../hooks/redux";
 import { loginDemoUser, loginUser } from "../../store/user/thunks";
@@ -20,7 +21,7 @@ export default function LoginForm(): JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const { fields, setField } = useFormFields({
+  const { fields, setField, getChangedFields } = useFormFields({
     username: "",
     password: "",
   });
@@ -34,7 +35,7 @@ export default function LoginForm(): JSX.Element {
     setErrors({});
 
     try {
-      await dispatch(loginUser(fields)).unwrap();
+      await dispatch(loginUser(getChangedFields() as LoginRequest)).unwrap();
       navigate("/account");
     } catch (error) {
       if (error instanceof Error) {

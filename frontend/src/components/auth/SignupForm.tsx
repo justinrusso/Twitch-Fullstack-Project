@@ -8,8 +8,9 @@ import {
 } from "@mui/material";
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { SignupResponseErrors } from "../../../../types/responses/SignupResponse";
 
+import SignupRequest from "../../../../types/requests/SignupRequest";
+import { SignupResponseErrors } from "../../../../types/responses/SignupResponse";
 import useFormFields from "../../hooks/form-fields";
 import { useAppDispatch } from "../../hooks/redux";
 import { signupUser } from "../../store/user/thunks";
@@ -18,7 +19,7 @@ export default function SignupForm(): JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const { fields, setField } = useFormFields({
+  const { fields, setField, getChangedFields } = useFormFields({
     firstName: "",
     lastName: "",
     username: "",
@@ -41,7 +42,7 @@ export default function SignupForm(): JSX.Element {
     }
 
     try {
-      await dispatch(signupUser(fields)).unwrap();
+      await dispatch(signupUser(getChangedFields() as SignupRequest)).unwrap();
       navigate("/account");
     } catch (error) {
       if (error instanceof Error) {

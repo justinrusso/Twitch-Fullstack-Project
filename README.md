@@ -6,9 +6,9 @@ PayMee is an application where users can transfer money between friends. Money m
 
 ## Documentation
 
-[API Routes](docs/api-routes.md)
-[Database Schema](docs/database.md)
-[Frontend Routes](docs/frontend-routes.md)
+- [API Routes](docs/api-routes.md)
+- [Database Schema](docs/database.md)
+- [Frontend Routes](docs/frontend-routes.md)
 
 ## Development & Production Release
 

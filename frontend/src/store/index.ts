@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import type { Middleware } from "redux";
 
+import friendsReducer from "./friends";
 import transactionsReducer from "./transactions";
 import userReducer from "./user";
 import usersReducer from "./users";
@@ -8,6 +9,7 @@ import usersReducer from "./users";
 const isDev = process.env.NODE_ENV !== "production";
 
 const rootReducer = combineReducers({
+  friends: friendsReducer,
   transactions: transactionsReducer,
   user: userReducer,
   users: usersReducer,

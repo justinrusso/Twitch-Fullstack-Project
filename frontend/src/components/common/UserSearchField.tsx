@@ -130,6 +130,7 @@ export default function UserSearchField({
           {...props}
         />
       )}
+      isOptionEqualToValue={(option, value) => option.id === value.id}
       noOptionsText="No Users Found"
       // Disable built in filtering
       filterOptions={(x) => x}

@@ -14,6 +14,10 @@ import FriendListItem from "./FriendListItem";
 type FriendsListProps = {
   dispatchArgs: FriendsQueryRequest;
   /**
+   * Controls if the Accept Request button is displayed and gets called when it is clicked.
+   */
+  onAcceptRequest?: (id: UserId) => void;
+  /**
    * Controls if the Decline Request button is displayed and gets called when it is clicked.
    */
   onDeclineRequest?: (id: UserId) => void;
@@ -26,6 +30,7 @@ type FriendsListProps = {
 
 export default function FriendsList({
   dispatchArgs,
+  onAcceptRequest,
   onDeclineRequest,
   onRemove,
   selector,
@@ -75,6 +80,11 @@ export default function FriendsList({
                     onClick={() => onRemove(friendship.friend.id)}
                   >
                     Remove Friend
+                  </Button>
+                )}
+                {onAcceptRequest && (
+                  <Button onClick={() => onAcceptRequest(friendship.friend.id)}>
+                    Accept
                   </Button>
                 )}
               </>

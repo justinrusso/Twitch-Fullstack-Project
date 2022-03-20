@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import FriendData from "../../../../types/entity/data/FriendData";
 import { getUsersFullName } from "../../utils/string";
-import { getFriends, removeFriendship } from "./thunks";
+import { acceptFriendship, getFriends, removeFriendship } from "./thunks";
 
 const initialState = {
   entities: {} as Record<number, FriendData>,
@@ -34,6 +34,13 @@ const friendsSlice = createSlice({
 
       state.entities = entities;
       state.order = order;
+    });
+
+    builder.addCase(acceptFriendship.fulfilled, (state, action) => {
+      const friendId = action.payload.friend.id;
+      if (state.entities[friendId]) {
+        state.entities[friendId] = action.payload;
+      }
     });
 
     builder.addCase(removeFriendship.fulfilled, (state, action) => {

@@ -10,6 +10,15 @@ export default class LocalFriendsApi {
     return fetchApi(buildFriendsRoute(`?${params}`));
   }
 
+  static async acceptFriendship(friendId: UserId) {
+    return fetchApiWithCsrf(buildFriendsRoute(`/${friendId}`), {
+      method: "PATCH",
+      body: JSON.stringify({
+        accepted: true,
+      }),
+    });
+  }
+
   static async removeFriendship(friendId: UserId) {
     return fetchApiWithCsrf(buildFriendsRoute(`/${friendId}`), {
       method: "DELETE",

@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import AuthRedirect from "./components/auth/AuthRedirect";
 import AccountLayout from "./components/layouts/AccountLayout";
 import { useAppDispatch } from "./hooks/redux";
+import AccountHomePage from "./pages/account/AccountHomePage";
 import FriendsPage from "./pages/account/FriendsPage";
 import NotificationsPage from "./pages/account/NotificationsPage";
 import SearchPage from "./pages/account/SearchPage";
@@ -43,7 +44,7 @@ export default function App(): JSX.Element {
               </AuthRedirect>
             }
           >
-            <Route index />
+            <Route index element={<AccountHomePage />} />
             <Route path="friends" element={<FriendsPage />} />
             <Route path="notifications" element={<NotificationsPage />} />
             <Route path="search" element={<SearchPage />} />

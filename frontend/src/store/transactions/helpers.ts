@@ -2,6 +2,7 @@ import TransactionsQueryRequest from "../../../../types/requests/TransactionsQue
 
 export enum TransactionsFilter {
   None = "None",
+  Completed = "Completed",
   OwedPaymentRequests = "OwedPaymentRequests",
 }
 
@@ -15,6 +16,9 @@ export function getTransactionQueryArgs(
   const args: TransactionsQueryRequest = {};
 
   switch (filter) {
+    case TransactionsFilter.Completed:
+      args.status = "paid";
+      break;
     case TransactionsFilter.OwedPaymentRequests:
       args.status = "unpaid";
       args.type = "payer";

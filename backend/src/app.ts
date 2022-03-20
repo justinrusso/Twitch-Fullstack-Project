@@ -36,7 +36,7 @@ app.use(((err: HttpError, _req, res, _next) => {
   }
 
   res.json({
-    errors: err.errors,
+    errors: err.errors || {},
     errorStack: isProduction ? undefined : err.stack,
   });
 }) as ErrorRequestHandler);

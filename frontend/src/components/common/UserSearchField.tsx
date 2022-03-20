@@ -121,18 +121,15 @@ export default function UserSearchField({
       value={selectedUser}
       options={allUsersSorted}
       getOptionLabel={(option) => `${option.firstName} ${option.lastName}`}
-      renderOption={(props, option) => {
-        console.log(props);
-        return (
-          <UserListItem
-            user={option}
-            showFriendIndicator={
-              (option as PublicUserDataWithFriendship).isFriend
-            }
-            {...props}
-          />
-        );
-      }}
+      renderOption={(props, option) => (
+        <UserListItem
+          user={option}
+          showFriendIndicator={
+            (option as PublicUserDataWithFriendship).isFriend
+          }
+          {...props}
+        />
+      )}
       noOptionsText="No Users Found"
       // Disable built in filtering
       filterOptions={(x) => x}

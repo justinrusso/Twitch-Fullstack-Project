@@ -65,6 +65,9 @@ friendsRouter.delete(
 
     if (!friendship) {
       const error = new HttpError(404);
+      error.errors = {
+        id: "No friendship found for the id provided",
+      };
       return next(error);
     }
 

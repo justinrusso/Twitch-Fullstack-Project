@@ -93,6 +93,12 @@ export default function AccountSidebar({
           <ListItemText primary="Notifications" />
         </ListItemButton>
         <ListItemButton
+          selected={Boolean(matchPath("/account/search", location.pathname))}
+          onClick={() => navigateTo("search")}
+        >
+          <ListItemText primary="Search" />
+        </ListItemButton>
+        <ListItemButton
           selected={Boolean(matchPath("/account/friends", location.pathname))}
           onClick={() => navigateTo("friends")}
         >

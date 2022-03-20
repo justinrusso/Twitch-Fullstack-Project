@@ -6,6 +6,7 @@ import AccountLayout from "./components/layouts/AccountLayout";
 import { useAppDispatch } from "./hooks/redux";
 import FriendsPage from "./pages/account/FriendsPage";
 import NotificationsPage from "./pages/account/NotificationsPage";
+import SearchPage from "./pages/account/SearchPage";
 import NewTransactionPage from "./pages/account/TransactionPage";
 import TransferPage from "./pages/account/TransferPage";
 import HomePage from "./pages/HomePage";
@@ -45,6 +46,7 @@ export default function App(): JSX.Element {
             <Route index />
             <Route path="friends" element={<FriendsPage />} />
             <Route path="notifications" element={<NotificationsPage />} />
+            <Route path="search" element={<SearchPage />} />
             <Route path="transactions/new" element={<NewTransactionPage />} />
             <Route path="transfer" element={<TransferPage />} />
           </Route>

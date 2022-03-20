@@ -40,7 +40,7 @@ export default function AccountLayout() {
         />
         <Box sx={{ display: "flex" }}>
           <AccountSidebar
-            closeDrawer={() => setMobileDrawerOpen((prev) => !prev)}
+            closeDrawer={() => setMobileDrawerOpen(false)}
             drawerBreakpoint={drawerBreakpoint}
             showDrawer={mobileDrawerOpen}
             width={drawerWidth}

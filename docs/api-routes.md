@@ -132,6 +132,182 @@ Logs in a guest as a demo user
 }
 ```
 
+## Friends
+
+### GET /api/friends
+
+_Note: A user must be authenticated to access this API endpoint_
+
+**Query Parameters**:
+
+```ts
+{
+  /**
+   * Searches for friends based on the status provided.
+   * If omitted, friendships regardless of status are returned.
+   */
+  status?: "accepted" | "pending";
+
+  /**
+   * **Required if status is pending.**
+   * Used to determine which pending friendships to return.
+   */
+  direction?: "received" | "sent";
+}
+```
+
+**Valid Response**:
+
+Returns all results from the query
+
+```ts
+{
+  data: {
+    friend: PublicUserData;
+    accepted: boolean;
+
+    /**
+     * A timestamp with timezone string
+     */
+    createdAt: string;
+    /**
+     * A timestamp with timezone string
+     */
+    updatedAt: string;
+  }
+  [];
+}
+```
+
+**Invalid Response**:
+
+```ts
+{
+  errors: {
+    direction?: string;
+    status?: string;
+  }
+}
+```
+
+### POST /api/friends
+
+_Note: A user must be authenticated to access this API endpoint_
+
+Creates a new friend request.
+
+**Request**:
+
+```ts
+{
+  /**
+   * The ID of the user to send the request to
+   */
+  id: UserId;
+}
+```
+
+**Valid Response**:
+
+```ts
+{
+  data: {
+    friend: PublicUserData;
+    accepted: boolean;
+
+    /**
+     * A timestamp with timezone string
+     */
+    createdAt: string;
+    /**
+     * A timestamp with timezone string
+     */
+    updatedAt: string;
+  }
+}
+```
+
+**Invalid Response**:
+
+```ts
+{
+  errors: {
+    id?: string;
+  }
+}
+```
+
+### PUT /api/friends/:id
+
+_Note: A user must be authenticated to access this API endpoint_
+
+Accepts a friend request given the user's ID.
+
+**Request**:
+
+```ts
+{
+  accepted: boolean;
+}
+```
+
+**Valid Response**:
+
+```ts
+{
+  data: {
+    friend: PublicUserData;
+    accepted: boolean;
+
+    /**
+     * A timestamp with timezone string
+     */
+    createdAt: string;
+    /**
+     * A timestamp with timezone string
+     */
+    updatedAt: string;
+  }
+}
+```
+
+**Invalid Response**:
+
+```ts
+{
+  errors: {
+    accepted?: string;
+    id?: string;
+  }
+}
+```
+
+### DELETE /api/friends/:id
+
+_Note: A user must be authenticated to access this API endpoint_
+
+Deletes a friendship or cancels a pending friend request.
+
+**Valid Response**:
+
+```ts
+{
+  data: {
+    id: UserId;
+  }
+}
+```
+
+**Invalid Response**:
+
+```ts
+{
+  errors: {
+    id?: string;
+  }
+}
+```
+
 ## Transactions
 
 ### GET /api/transactions

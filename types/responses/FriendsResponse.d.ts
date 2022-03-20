@@ -3,8 +3,7 @@ import BaseReponse from "./BaseResponse";
 
 export type FriendsResponseErrors = {
   direction?: string;
-  userId?: string;
-  friendId?: string;
+  status?: string;
 };
 
 type FriendsResponse = BaseReponse<FriendData[], FriendsResponseErrors>;

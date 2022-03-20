@@ -18,6 +18,10 @@ type FriendsListProps = {
    */
   onAcceptRequest?: (id: UserId) => void;
   /**
+   * Controls if the Cancel Request button is displayed and gets called when it is clicked.
+   */
+  onCancel?: (id: UserId) => void;
+  /**
    * Controls if the Decline Request button is displayed and gets called when it is clicked.
    */
   onDeclineRequest?: (id: UserId) => void;
@@ -31,6 +35,7 @@ type FriendsListProps = {
 export default function FriendsList({
   dispatchArgs,
   onAcceptRequest,
+  onCancel,
   onDeclineRequest,
   onRemove,
   selector,
@@ -66,6 +71,14 @@ export default function FriendsList({
             friend={friendship.friend}
             actions={
               <>
+                {onCancel && (
+                  <Button
+                    color="error"
+                    onClick={() => onCancel(friendship.friend.id)}
+                  >
+                    Cancel Request
+                  </Button>
+                )}
                 {onDeclineRequest && (
                   <Button
                     color="error"

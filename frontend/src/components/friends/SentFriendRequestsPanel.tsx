@@ -17,12 +17,12 @@ export default function SentFriendRequestsPanel({
   const dispatch = useAppDispatch();
   const temporaryNotifications = useTemporaryNotifications();
 
-  const handleDecline = async (id: UserId) => {
+  const handleCancel = async (id: UserId) => {
     try {
       await dispatch(removeFriendship(id)).unwrap();
     } catch (error) {
       temporaryNotifications.enqueueNotification({
-        message: "Failed to decline friendship request.",
+        message: "Failed to cancel friendship request.",
         severity: "error",
       });
     }
@@ -43,7 +43,7 @@ export default function SentFriendRequestsPanel({
               direction: "sent",
             }}
             selector={selectUserRequestedFriendships}
-            onDeclineRequest={handleDecline}
+            onCancel={handleCancel}
           />
         </>
       )}

@@ -4,9 +4,13 @@ import { useEffect, useMemo, useState } from "react";
 
 import PublicUserData from "../../../../types/entity/data/PublicUserData";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { getFriends } from "../../store/friends/thunks";
 import { clearUsers } from "../../store/users";
 import { selectAllUsers } from "../../store/users/selectors";
 import { getUsers } from "../../store/users/thunks";
+import UserListItem from "../user/UserListItem";
+
+type PublicUserDataWithFriendship = PublicUserData & { isFriend: boolean };
 
 type OmittedAutocompleteProps =
   | "value"
@@ -65,6 +69,34 @@ export default function UserSearchField({
 
   const allUsers = useAppSelector(selectAllUsers());
 
+  const friendshipsEntiies = useAppSelector((state) => state.friends.entities);
+
+  useEffect(() => {
+    // Get all friends to check against
+    dispatch(getFriends({}));
+  }, [dispatch]);
+
+  /**
+   * Sort all users by their friendship status. Friends should be prioritized in the list.
+   */
+  const allUsersSorted = useMemo(() => {
+    const sorted: PublicUserDataWithFriendship[] = [];
+    const notFriends: PublicUserDataWithFriendship[] = [];
+
+    allUsers.forEach((user) => {
+      const friendship = friendshipsEntiies[user.id];
+      if (friendship && friendship.accepted) {
+        sorted.push({ ...user, isFriend: true });
+      } else {
+        notFriends.push({ ...user, isFriend: false });
+      }
+    });
+
+    notFriends.forEach((user) => sorted.push(user));
+
+    return sorted;
+  }, [allUsers, friendshipsEntiies]);
+
   const getUsersThrottled = useMemo(
     () =>
       throttle(
@@ -87,10 +119,20 @@ export default function UserSearchField({
       id="user-search-input"
       fullWidth
       value={selectedUser}
-      options={allUsers}
-      getOptionLabel={(option) =>
-        `${option.firstName} ${option.lastName} @${option.username}`
-      }
+      options={allUsersSorted}
+      getOptionLabel={(option) => `${option.firstName} ${option.lastName}`}
+      renderOption={(props, option) => {
+        console.log(props);
+        return (
+          <UserListItem
+            user={option}
+            showFriendIndicator={
+              (option as PublicUserDataWithFriendship).isFriend
+            }
+            {...props}
+          />
+        );
+      }}
       noOptionsText="No Users Found"
       // Disable built in filtering
       filterOptions={(x) => x}

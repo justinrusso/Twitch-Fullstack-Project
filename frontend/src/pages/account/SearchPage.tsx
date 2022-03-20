@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import UserId from "../../../../types/entity/ids/UserId";
 import LoadingCircle from "../../components/common/LoadingCircle";
-import FriendListItem from "../../components/friends/FriendListItem";
+import UserListItem from "../../components/user/UserListItem";
 import { useAppBar } from "../../contexts/AppBarProvider";
 import { useTemporaryNotifications } from "../../contexts/TemporaryNotificationsProvider";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
@@ -90,9 +90,9 @@ export default function SearchPage(): JSX.Element {
       {allUsers.length > 0 ? (
         <List sx={{ pt: 2 }}>
           {allUsers.map((user) => (
-            <FriendListItem
+            <UserListItem
               key={user.id}
-              friend={user}
+              user={user}
               actions={
                 !friendshipsEntiies[user.id] ? (
                   <Button onClick={() => handleAddFriend(user.id)}>

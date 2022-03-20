@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { RootState } from "../../store";
 import { getFriends } from "../../store/friends/thunks";
 import LoadingCircle from "../common/LoadingCircle";
-import FriendListItem from "./FriendListItem";
+import UserListItem from "../user/UserListItem";
 
 type FriendsListProps = {
   dispatchArgs: FriendsQueryRequest;
@@ -67,8 +67,8 @@ export default function FriendsList({
     <List>
       {friendships.map((friendship, i) => (
         <Fragment key={friendship.friend.id}>
-          <FriendListItem
-            friend={friendship.friend}
+          <UserListItem
+            user={friendship.friend}
             actions={
               <>
                 {onCancel && (

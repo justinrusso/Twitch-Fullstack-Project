@@ -5,16 +5,22 @@ import { getCustomRepository, getRepository } from "typeorm";
 import FriendData from "../../../../types/entity/data/FriendData";
 import UserId from "../../../../types/entity/ids/UserId";
 import FriendPatchRequest from "../../../../types/requests/FriendPatchRequest";
+import FriendPostRequest from "../../../../types/requests/FriendPostRequest";
 import FriendsQueryRequest from "../../../../types/requests/FriendsQueryRequest";
 import FriendDeleteResponse from "../../../../types/responses/FriendDeleteReponse";
 import FriendPatchResponse from "../../../../types/responses/FriendPatchResponse";
+import FriendPostResponse, {
+  FriendPostResponseErrors,
+} from "../../../../types/responses/FriendPostResponse";
 import FriendsResponse from "../../../../types/responses/FriendsResponse";
 import HttpError from "../../common/HttpError";
 import { requireAuth } from "../../common/middlewares/auth";
+import friendValidatorMiddlewares from "../../common/middlewares/validation/friend";
 import friendsQueryValidatorMiddlewares from "../../common/middlewares/validation/friends-query";
 import { Mutable } from "../../common/Mutable";
 import { ResponseWithUserRequired } from "../../common/responses";
 import Friend from "../../db/entities/Friend";
+import User from "../../db/entities/User";
 import FriendRepository, {
   FriendWithRelations,
 } from "../../db/repositories/FriendRepository";
@@ -60,6 +66,55 @@ friendsRouter.get(
       data: friends.map((friendship) =>
         convertFriendshipJSON(user.id, friendship)
       ),
+    };
+
+    res.json(responseData);
+  })
+);
+
+friendsRouter.post(
+  "/",
+  ...requireAuth,
+  ...friendValidatorMiddlewares,
+  expressAsyncHandler(async (req, res, next) => {
+    const { id: friendId } = req.body as FriendPostRequest;
+
+    const user = (res as ResponseWithUserRequired).locals.user;
+
+    let friendship = await getCustomRepository(FriendRepository).find(
+      user.id,
+      friendId
+    );
+
+    if (friendship) {
+      const error = new HttpError<FriendPostResponseErrors>(400);
+      error.errors = {
+        id: "A friendship already exists for this user",
+      };
+      return next(error);
+    }
+
+    const friendUser = await getRepository(User).findOne(friendId);
+
+    if (!friendUser) {
+      const error = new HttpError<FriendPostResponseErrors>(404);
+      error.errors = {
+        id: "User does not exist",
+      };
+      return next(error);
+    }
+
+    friendship = new Friend() as FriendWithRelations;
+    friendship.accepted = false;
+    friendship.friend = friendUser;
+    friendship.friendId = friendId;
+    friendship.user = user;
+    friendship.userId = user.id;
+
+    await getRepository(Friend).save(friendship);
+
+    const responseData: FriendPostResponse = {
+      data: convertFriendshipJSON(user.id, friendship),
     };
 
     res.json(responseData);

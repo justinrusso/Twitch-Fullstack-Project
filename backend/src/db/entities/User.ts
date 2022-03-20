@@ -5,7 +5,7 @@ import PublicUserData from "../../../../types/entity/data/PublicUserData";
 import type SafeUserData from "../../../../types/entity/data/SafeUserData";
 import UserId from "../../../../types/entity/ids/UserId";
 import type { Mutable } from "../../common/Mutable";
-import { BankTransfer } from "./BankTransfer";
+import BankTransfer from "./BankTransfer";
 import Transaction from "./Transaction";
 
 @Entity({ name: "users" })

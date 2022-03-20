@@ -16,7 +16,7 @@ import HttpError from "../../common/HttpError";
 import { requireAuth } from "../../common/middlewares/auth";
 import transferValidatorMiddlewares from "../../common/middlewares/validation/transfer";
 import { ResponseWithUserRequired } from "../../common/responses";
-import { BankTransfer } from "../../db/entities/BankTransfer";
+import BankTransfer from "../../db/entities/BankTransfer";
 
 const transfersRouter = Router();
 

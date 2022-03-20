@@ -13,7 +13,9 @@ import PaymentProcessor from "../../apis/PaymentProcessor";
 import User from "./User";
 
 @Entity({ name: "bank_transfers" })
-export class BankTransfer implements Omit<BankTransferData, "createdAt"> {
+export default class BankTransfer
+  implements Omit<BankTransferData, "createdAt">
+{
   @PrimaryGeneratedColumn()
   id!: BankTransferId;
 

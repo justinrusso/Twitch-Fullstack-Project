@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import UserId from "../../../../types/entity/ids/UserId";
 import LoadingCircle from "../../components/common/LoadingCircle";
 import FriendListItem from "../../components/friends/FriendListItem";
+import { useAppBar } from "../../contexts/AppBarProvider";
 import { useTemporaryNotifications } from "../../contexts/TemporaryNotificationsProvider";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { getFriends, requestFriendship } from "../../store/friends/thunks";
@@ -15,6 +16,12 @@ import { getUsers } from "../../store/users/thunks";
 export default function SearchPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const { enqueueNotification } = useTemporaryNotifications();
+
+  const { setTitle } = useAppBar();
+
+  useEffect(() => {
+    setTitle("User Search");
+  }, [setTitle]);
 
   const [loaded, setLoaded] = useState(false);
 

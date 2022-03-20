@@ -17,12 +17,17 @@ type FriendsListProps = {
    * Controls if the Decline Request button is displayed and gets called when it is clicked.
    */
   onDeclineRequest?: (id: UserId) => void;
+  /**
+   * Controls if the Remove Friend button is displayed and gets called when it is clicked.
+   */
+  onRemove?: (id: UserId) => void;
   selector: () => (state: RootState) => FriendData[];
 };
 
 export default function FriendsList({
   dispatchArgs,
   onDeclineRequest,
+  onRemove,
   selector,
 }: FriendsListProps): JSX.Element {
   const dispatch = useAppDispatch();
@@ -62,6 +67,14 @@ export default function FriendsList({
                     onClick={() => onDeclineRequest(friendship.friend.id)}
                   >
                     Decline
+                  </Button>
+                )}
+                {onRemove && (
+                  <Button
+                    color="error"
+                    onClick={() => onRemove(friendship.friend.id)}
+                  >
+                    Remove Friend
                   </Button>
                 )}
               </>

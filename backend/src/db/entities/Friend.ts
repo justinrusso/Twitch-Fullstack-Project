@@ -1,5 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryColumn, RelationId } from "typeorm";
 import FriendData from "../../../../types/entity/data/FriendData";
+import PublicUserData from "../../../../types/entity/data/PublicUserData";
 
 import UserId from "../../../../types/entity/ids/UserId";
 import User from "./User";
@@ -44,7 +45,7 @@ export default class Friend {
   })
   updatedAt!: Date;
 
-  toJSON(): FriendData {
+  toJSON(): FriendData & { user: PublicUserData } {
     if (!this.user) {
       throw new Error("User property missing from Friend");
     }

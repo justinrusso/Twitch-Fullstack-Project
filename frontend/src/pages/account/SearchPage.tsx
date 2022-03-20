@@ -83,6 +83,7 @@ export default function SearchPage(): JSX.Element {
         id="user-search-input"
         label="Search Users"
         fullWidth
+        autoFocus
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
       />

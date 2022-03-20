@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import LoadingCircle from "../../components/common/LoadingCircle";
 import TransactionListItem from "../../components/transactions/TransactionListItem";
+import { useAppBar } from "../../contexts/AppBarProvider";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { TransactionsFilter } from "../../store/transactions/helpers";
 import { selectAllTransactions } from "../../store/transactions/selectors";
@@ -10,6 +11,12 @@ import { getTransactions } from "../../store/transactions/thunks";
 
 export default function AccountHomePage(): JSX.Element {
   const dispatch = useAppDispatch();
+
+  const { setTitle } = useAppBar();
+
+  useEffect(() => {
+    setTitle("Home");
+  }, [setTitle]);
 
   const [loading, setLoading] = useState(false);
 

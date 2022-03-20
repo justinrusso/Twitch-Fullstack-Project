@@ -166,6 +166,7 @@ transactionsRouter.patch(
     const isPayment = typeof paid === "boolean" && paid && !transaction.paid;
 
     transaction.paid = paid ?? transaction.paid;
+    transaction.updatedAt = new Date();
 
     if (isPayment) {
       // Ensure payer has enough money

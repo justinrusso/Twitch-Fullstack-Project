@@ -22,7 +22,7 @@ authRouter.get("/", ...requireAuth, (_req, res: ResponseWithUserRequired) => {
   const user = res.locals.user;
 
   const jsonData: LoginResponse = {
-    data: user,
+    data: user.toPrivateJSON(),
   };
 
   return res.json(jsonData);
@@ -65,7 +65,7 @@ authRouter.post(
     setTokenCookie(res, user);
 
     const jsonData: LoginResponse = {
-      data: user,
+      data: user.toPrivateJSON(),
     };
 
     res.json(jsonData);
@@ -90,7 +90,7 @@ authRouter.get(
     setTokenCookie(res, user);
 
     const jsonData: LoginResponse = {
-      data: user,
+      data: user.toPrivateJSON(),
     };
 
     res.json(jsonData);
@@ -116,7 +116,7 @@ authRouter.post(
     setTokenCookie(res, user);
 
     const jsonData: SignupResponse = {
-      data: user,
+      data: user.toPrivateJSON(),
     };
 
     res.json(jsonData);

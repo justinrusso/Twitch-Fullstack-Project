@@ -48,14 +48,14 @@ export default class User implements SafeUserData {
     return compareSync(rawPassword, this.hashedPassword);
   }
 
-  toJSON(): SafeUserData {
+  toPrivateJSON(): SafeUserData {
     return {
-      ...this.toPublicJSON(),
+      ...this.toJSON(),
       balance: this.balance,
     };
   }
 
-  toPublicJSON(): PublicUserData {
+  toJSON(): PublicUserData {
     return {
       id: this.id,
       firstName: this.firstName,

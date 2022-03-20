@@ -37,7 +37,7 @@ usersRouter.get(
     const users = await usersQuery.getMany();
 
     const responseData: UsersResponse = {
-      data: users.map((user) => user.toPublicJSON()),
+      data: users.map((user) => user.toJSON()),
     };
 
     res.json(responseData);

@@ -7,7 +7,7 @@ import User from "../db/entities/User";
 const { jwtConfig } = config;
 
 export function setTokenCookie(res: Response, user: User) {
-  const token = sign({ data: user.toJSON() }, jwtConfig.secret, {
+  const token = sign({ data: user.toPrivateJSON() }, jwtConfig.secret, {
     expiresIn: jwtConfig.expiresIn,
   });
 

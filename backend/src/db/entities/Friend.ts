@@ -54,8 +54,8 @@ export default class Friend {
     }
 
     return {
-      user: this.user.toPublicJSON(),
-      friend: this.friend.toPublicJSON(),
+      user: this.user.toJSON(),
+      friend: this.friend.toJSON(),
       accepted: this.accepted,
       createdAt: this.createdAt.toISOString(),
       updatedAt: this.updatedAt.toISOString(),

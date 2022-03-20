@@ -74,9 +74,9 @@ export default class Transaction {
 
     return {
       id: this.id,
-      payer: this.payer.toPublicJSON(),
-      payee: this.payee.toPublicJSON(),
-      creator: this.creator.toPublicJSON(),
+      payer: this.payer.toJSON(),
+      payee: this.payee.toJSON(),
+      creator: this.creator.toJSON(),
       amount: this.amount,
       memo: this.memo,
       paid: this.paid,

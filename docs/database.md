@@ -3,7 +3,6 @@
 ## Important Notes
 
 - Money data stored in the databse should be stored as integers. Values will be considered as cents and will be converted to decimal amounts in the front-end.
-- Due to Sequelize's limitations, composite keys can not be used.
 
 ## Users Table
 
@@ -58,11 +57,8 @@ The `creatorId` references the user who initiated the request. If the `creatorId
 
 The `friends` table stores friend relationships. This includes pending friend requests incicated by the `accepted` boolean.
 
-Due to limitations with the Sequelize ORM, a composite primary key is not being used.
-
 | Column Name | Data Type | Attributes                        |
 | ----------- | --------- | --------------------------------- |
-| id          | serial    | PK NOT NULL                       |
 | userId      | integer   | FK NOT NULL (references users.id) |
 | friendId    | integer   | FK NOT NULL (references users.id) |
 | accepted    | boolean   | NOT NULL                          |

@@ -1,16 +1,16 @@
 import { Box, Tab, Tabs, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import IncommingFriendRequestsPanel from "../../components/friends/IncommingFriendRequestsPanel";
 
-import TransactionsNotificationPanel from "../../components/transactions/TransactionsNotificationPanel";
+import FriendsPanel from "../../components/friends/FriendsPanel";
+import SentFriendRequestsPanel from "../../components/friends/SentFriendRequestsPanel";
 import { useAppBar } from "../../contexts/AppBarProvider";
 import { tabA11yProps } from "../../utils/accessibility";
 
-export default function NotificationsPage(): JSX.Element {
+export default function FriendsPage(): JSX.Element {
   const { setTitle } = useAppBar();
 
   useEffect(() => {
-    setTitle("Notifications");
+    setTitle("Friends");
   }, [setTitle]);
 
   const [activeTab, setActiveTab] = useState<0 | 1>(0);
@@ -18,31 +18,31 @@ export default function NotificationsPage(): JSX.Element {
   return (
     <>
       <Typography variant="h4" component="h1" textAlign="center">
-        Notifications
+        Friends
       </Typography>
       <Box>
         <Tabs
           centered
           value={activeTab}
           onChange={(_e, newValue) => setActiveTab(newValue)}
-          aria-label="Notification tabs"
+          aria-label="Friends tabs"
         >
           <Tab
-            label="Transactions"
+            label="Friends"
             value={0}
-            {...tabA11yProps("notification", 0)}
+            {...tabA11yProps("friends", 0)}
             sx={{ flexGrow: 1 }}
           />
           <Tab
-            label="Friend Requests"
+            label="Sent Requests"
             value={1}
-            {...tabA11yProps("notification", 1)}
+            {...tabA11yProps("friends", 1)}
             sx={{ flexGrow: 1 }}
           />
         </Tabs>
       </Box>
-      <TransactionsNotificationPanel index={0} visible={activeTab === 0} />
-      <IncommingFriendRequestsPanel index={1} visible={activeTab === 1} />
+      <FriendsPanel index={0} visible={activeTab === 0} />
+      <SentFriendRequestsPanel index={1} visible={activeTab === 1} />
     </>
   );
 }
